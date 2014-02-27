@@ -6,6 +6,10 @@
 //  Copyright (c) 2014 Xmartlabs. All rights reserved.
 //
 
+#import "MailBoxChildViewController.h"
+#import "MailBoxTableChildViewController.h"
+#import "XLSwipeNavigationController.h"
+
 #import "AppDelegate.h"
 
 @implementation AppDelegate
@@ -15,6 +19,12 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
+    
+    MailBoxTableChildViewController * child_1 = [[MailBoxTableChildViewController alloc] initWithStyle:UITableViewStylePlain];
+    MailBoxChildViewController * child_2 = [[MailBoxChildViewController alloc] init];
+    MailBoxTableChildViewController * child_3 = [[MailBoxTableChildViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    MailBoxChildViewController * child_4 = [[MailBoxChildViewController alloc] init];
+    self.window.rootViewController = [[XLSwipeNavigationController alloc] initWithViewControllers:child_1, child_2, child_3, child_4, nil];
     [self.window makeKeyAndVisible];
     return YES;
 }
