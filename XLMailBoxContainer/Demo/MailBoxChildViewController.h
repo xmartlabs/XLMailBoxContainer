@@ -10,7 +10,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MailBoxChildViewController : UIViewController <XLSwipeContainerItemDelegate>
+@interface MailBoxChildViewController : UIViewController <XLSwipeContainerChildItem>
 
 
 

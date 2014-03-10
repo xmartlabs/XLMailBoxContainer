@@ -32,7 +32,7 @@
 @implementation XLSwipeNavigationController
 
 
--(id)initWithViewControllers:(UIViewController<XLSwipeContainerItemDelegate> *)firstViewController, ...
+-(id)initWithViewControllers:(UIViewController<XLSwipeContainerChildItem> *)firstViewController, ...
 {
     self = [self initWithNibName:nil bundle:nil];
     if (self)

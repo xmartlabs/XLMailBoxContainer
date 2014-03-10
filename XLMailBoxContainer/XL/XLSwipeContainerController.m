@@ -83,12 +83,12 @@
 {
     if (_segmentedControl) return _segmentedControl;
     NSMutableArray * segmentedControlItems = [[NSMutableArray alloc] init];
-    for (UIViewController<XLSwipeContainerItemDelegate> * swipContainerItemVC in self.swipeViewControllers){
+    for (UIViewController<XLSwipeContainerChildItem> * swipContainerItemVC in self.swipeViewControllers){
         [segmentedControlItems addObject:swipContainerItemVC.swipeContainerItemAssociatedSegmentedItem];
     }
     _segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentedControlItems];
     [_segmentedControl setSelectedSegmentIndex:self.currentIndex];
-    UIViewController<XLSwipeContainerItemDelegate> * currentController = [self.swipeViewControllers objectAtIndex:self.currentIndex];
+    UIViewController<XLSwipeContainerChildItem> * currentController = [self.swipeViewControllers objectAtIndex:self.currentIndex];
     if (self.navigationController){
         [self.navigationController.navigationBar setTintColor:[currentController swipeContainerItemAssociatedColor]];
     }
@@ -106,8 +106,8 @@
 {
     NSInteger selectedIndex = [sender selectedSegmentIndex];
     if (self.currentIndex != selectedIndex){
-        UIViewController<XLSwipeContainerItemDelegate> * currentController = [self.swipeViewControllers objectAtIndex:self.currentIndex];
-        UIViewController<XLSwipeContainerItemDelegate> * newViewController = [self.swipeViewControllers objectAtIndex:selectedIndex];
+        UIViewController<XLSwipeContainerChildItem> * currentController = [self.swipeViewControllers objectAtIndex:self.currentIndex];
+        UIViewController<XLSwipeContainerChildItem> * newViewController = [self.swipeViewControllers objectAtIndex:selectedIndex];
         NSInteger x_change = self.currentIndex > selectedIndex ? self.view.frame.size.width : -self.view.frame.size.width;
         [newViewController.view setFrame:CGRectMake(-x_change, 0, self.view.frame.size.width, self.view.frame.size.height)];
         newViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;

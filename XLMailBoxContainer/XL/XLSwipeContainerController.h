@@ -30,7 +30,7 @@
 /**
  The `XLSwipeContainerItemDelegate` protocol is adopted by child controllers of XLSwipeContainerController. Each child view controller has to define a color and either a image or string in order to create the related UISegmentedControl option and update the color accordingly when the selected child view controller change.
  */
-@protocol XLSwipeContainerItemDelegate <NSObject>
+@protocol XLSwipeContainerChildItem <NSObject>
 
 @required
 

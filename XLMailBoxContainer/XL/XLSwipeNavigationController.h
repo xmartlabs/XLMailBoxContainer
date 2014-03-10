@@ -44,6 +44,6 @@
  
  @param fistViewController,... Variable argument list of view controllers that conforms to XLSwipeContainerItemDelegate. XLSwipeNavigationController will have as many segmented control options as view controllers passed in this parameter.
  */
--(id)initWithViewControllers:(UIViewController<XLSwipeContainerItemDelegate> *)firstViewController, ... NS_REQUIRES_NIL_TERMINATION;
+-(id)initWithViewControllers:(UIViewController<XLSwipeContainerChildItem> *)firstViewController, ... NS_REQUIRES_NIL_TERMINATION;
 
 @end
