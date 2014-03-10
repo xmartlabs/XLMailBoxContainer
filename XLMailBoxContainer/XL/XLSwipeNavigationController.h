@@ -26,21 +26,24 @@
 // THE SOFTWARE.
 
 
+#import "XLSwipeContainerController.h"
+
 #import <UIKit/UIKit.h>
 
-
-@protocol XLSwipeContainerItemDelegate <NSObject>
-
-@required
-
-// items can be NSStrings or UIImages. control is automatically sized to fit content
-- (id)swipeContainerItemAssociatedSegmentedItem;
-- (UIColor *)swipeContainerItemAssociatedColor;
-
-@end
-
+/**
+ `XLSwipeNavigationController` is just a helper to create the swipe custom container view controller and set it as the rootViewController. You don't need to use this classs at all, optionally you can create a XLSwipeContainerControllergitx
+ by your own and set it as the rootViewController of any UINavigationController.
+ */
 @interface XLSwipeNavigationController : UINavigationController
 
+
+/**
+ Initializes and returns a newly allocated XLSwipeContainerController object, it also set up the rootViewController property with a XLSwipeContainerController instance.
+ 
+ This is the designated initializer.
+ 
+ @param fistViewController,... Variable argument list of view controllers that conforms to XLSwipeContainerItemDelegate. XLSwipeNavigationController will have as many segmented control options as view controllers passed in this parameter.
+ */
 -(id)initWithViewControllers:(UIViewController<XLSwipeContainerItemDelegate> *)firstViewController, ... NS_REQUIRES_NIL_TERMINATION;
 
 @end

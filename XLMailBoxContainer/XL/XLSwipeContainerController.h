@@ -25,16 +25,56 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "XLSwipeNavigationController.h"
-
 #import <UIKit/UIKit.h>
+
+/**
+ The `XLSwipeContainerItemDelegate` protocol is adopted by child controllers of XLSwipeContainerController. Each child view controller has to define a color and either a image or string in order to create the related UISegmentedControl option and update the color accordingly when the selected child view controller change.
+ */
+@protocol XLSwipeContainerItemDelegate <NSObject>
+
+@required
+
+/**
+ @return UIImage or NSString used as UISegmentedControl item of child viewController.
+ */
+- (id)swipeContainerItemAssociatedSegmentedItem;
+
+/**
+ @return UIColor used when child controller is selected. The tintColor of UINavigationBar will change to this color when the UISegmentedControl option related to child viewController is selected.
+ */
+- (UIColor *)swipeContainerItemAssociatedColor;
+
+@end
+
 
 @interface XLSwipeContainerController : UIViewController
 
+/**
+ Initializes a `XLSwipeContainerController` object with child controllers contained in viewControllers parameter.
+ 
+ @param viewControllers ChildViewControllers to be added to XLSwipeContainerController.
+ 
+ @return The newly-initialized XLSwipeContainerController custom container controller.
+ */
 -(id)initWithViewControllers:(NSArray *)viewControllers;
 
+/**
+ Initializes a `XLSwipeContainerController` object with child controllers contained in viewControllers parameter.
+ 
+ This is the designated initializer.
+ 
+ @param viewControllers hildViewControllers to be added to XLSwipeContainerController.
+ 
+ @param currentIndex Index of childViewController selected by default.
+ 
+ @return The newly-initialized XLSwipeContainerController custom container controller.
+ */
 -(id)initWithViewControllers:(NSArray *)viewControllers currentIndex:(NSUInteger)currentIndex;
 
+
+/**
+ @return array containing all childViewControllers.
+ */
 @property (readonly) NSArray * swipeViewControllers;
 
 @end

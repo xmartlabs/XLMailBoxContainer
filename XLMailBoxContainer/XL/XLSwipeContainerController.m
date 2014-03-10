@@ -89,7 +89,12 @@
     _segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentedControlItems];
     [_segmentedControl setSelectedSegmentIndex:self.currentIndex];
     UIViewController<XLSwipeContainerItemDelegate> * currentController = [self.swipeViewControllers objectAtIndex:self.currentIndex];
-    [_segmentedControl setTintColor:[currentController swipeContainerItemAssociatedColor]];
+    if (self.navigationController){
+        [self.navigationController.navigationBar setTintColor:[currentController swipeContainerItemAssociatedColor]];
+    }
+    else{
+        [_segmentedControl setTintColor:[currentController swipeContainerItemAssociatedColor]];
+    }
     [_segmentedControl addTarget:self
                           action:@selector(changeSwipeViewController:)
                 forControlEvents:UIControlEventValueChanged];
@@ -106,7 +111,12 @@
         NSInteger x_change = self.currentIndex > selectedIndex ? self.view.frame.size.width : -self.view.frame.size.width;
         [newViewController.view setFrame:CGRectMake(-x_change, 0, self.view.frame.size.width, self.view.frame.size.height)];
         newViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-        [self.segmentedControl setTintColor:[newViewController swipeContainerItemAssociatedColor]];
+        if (self.navigationController){
+            [self.navigationController.navigationBar setTintColor:[newViewController swipeContainerItemAssociatedColor]];
+        }
+        else{
+            [self.segmentedControl setTintColor:[newViewController swipeContainerItemAssociatedColor]];
+        }
         [self addChildViewController:newViewController];
         [self.view addSubview:newViewController.view];
         [UIView animateWithDuration:0.3f

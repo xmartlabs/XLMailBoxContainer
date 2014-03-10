@@ -29,21 +29,7 @@
 
 #import "XLSwipeNavigationController.h"
 
-@interface XLSwipeNavigationController ()
-
-@end
-
 @implementation XLSwipeNavigationController
-
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 
 -(id)initWithViewControllers:(UIViewController<XLSwipeContainerItemDelegate> *)firstViewController, ...
@@ -69,21 +55,6 @@
         
     }
     return self;
-}
-
-
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-	// Do any additional setup after loading the view.
-//    [self.view setUserInteractionEnabled:YES];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 
