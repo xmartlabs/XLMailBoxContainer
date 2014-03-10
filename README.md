@@ -3,15 +3,20 @@ XLMailBoxContainer
 
 Custom container view controller ala MailBox app.
 
-XLSwipeContainerController is the most important class of the library. Just using this class you can get the same functionality shown on the gif bellow.
+`XLSwipeContainerController` is the most important class of the library. Just using this class you can get the same functionality shown on the gif bellow.
 
 XLSwipeContainerController handles a collection of childViewControllers created by the developer and also manages a UISegmentedControl, adding it to the parent UINavigationController and changing the color of it depending on which child view controller is selected.
 
-XLSwipeNavigationController give us the possibility to create the UINavigationController along with the XLSwipeContainerController just passing a list of childViewControllets.
+`XLSwipeNavigationController` give us the possibility to create the UINavigationController along with the XLSwipeContainerController just passing a list of childViewControllets.
 
-Each childViewController must conform XLSwipeContainerChildItem protocol.
+Each childViewController must conform `XLSwipeContainerChildItem` protocol.
 
 You can use this pod along with [MCSwipeTableViewCell](https://github.com/alikaragoz/MCSwipeTableViewCell) to create an app that looks like MailBox app.
+
+
+
+<p align="center"><img src="https://raw.github.com/xmartlabs/XLMailBoxContainer/master/example.gif"/></p>
+
 
 Installation
 --------
@@ -25,7 +30,7 @@ The easiest way to integrate XLMailBoxContainer in your projects is via [CocoaPo
 2. Run the command `pod install` from the Podfile folder directory.
 
 You can also install XLMailBoxContainer manually. We don't recommend this approach at all.
-The source files you will need are in XLMailBoxContainer/XL folder. 
+The source files you will need are included in XLMailBoxContainer/XL folder. 
 
 
 Example
