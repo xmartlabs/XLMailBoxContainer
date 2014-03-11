@@ -56,9 +56,11 @@ self.window.rootViewController = [[XLSwipeNavigationController alloc] initWithVi
 ```
 or
 
+```objc
 NSArray * childViewControllers = @[child_1, child_2 ,child_3 ,child_4];
 XLSwipeContainerController * containerController = [[XLSwipeContainerController alloc] initWithViewControllers:childViewControllers];
 self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:containerController];
+```
 
 That's all folks!
 
