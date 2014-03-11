@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
                   DESC
   s.homepage = 'https://github.com/xmartlabs/XLMailBoxContainer'
   s.authors  = { 'Martin Barreto' => 'martin@xmartlabs.com' }
-  s.source   = { :git => 'https://github.com/xmartlabs/XLMailBoxContainer.git', :branch => 'master'}
+  s.source   = { :git => 'https://github.com/xmartlabs/XLMailBoxContainer.git', :tag => 'v1.0.0' }
   s.source_files = 'XLMailBoxContainer/XL/*.{h,m}'
   s.requires_arc = true
   s.ios.deployment_target = '7.0'
