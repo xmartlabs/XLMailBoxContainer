@@ -77,4 +77,9 @@
  */
 @property (readonly) NSArray * swipeViewControllers;
 
+/**
+ The minimal width of the UISegmentedControl in the UINavigationItem's title view
+ */
+@property (nonatomic) CGFloat segmentedControlMinimalWidth;
+
 @end

@@ -60,7 +60,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+    // Do any additional setup after loading the view.
     UIViewController * viewController = [self.swipeViewControllers objectAtIndex:self.currentIndex];
     // add child viewController
     [self addChildViewController:viewController];
@@ -78,6 +78,21 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)setSegmentedControlMinimalWidth:(CGFloat)segmentedControlMinimalWidth
+{
+    _segmentedControlMinimalWidth = segmentedControlMinimalWidth;
+
+    [self adjustSegmentedControl:self.segmentedControl forMinimalWidth:segmentedControlMinimalWidth];
+}
+
+- (void)adjustSegmentedControl:(UISegmentedControl *)segmentedControl forMinimalWidth:(CGFloat)minimalWidth
+{
+    if (segmentedControl.frame.size.width < minimalWidth) {
+        CGRect frame = segmentedControl.frame;
+        frame.size.width = minimalWidth;
+        segmentedControl.frame = frame;
+    }
+}
 
 -(UISegmentedControl *)segmentedControl
 {
@@ -98,6 +113,10 @@
     [_segmentedControl addTarget:self
                           action:@selector(changeSwipeViewController:)
                 forControlEvents:UIControlEventValueChanged];
+    
+
+    [self adjustSegmentedControl:_segmentedControl forMinimalWidth:self.segmentedControlMinimalWidth];
+    
     return _segmentedControl;
 }
 
