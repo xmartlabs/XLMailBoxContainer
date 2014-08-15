@@ -141,16 +141,24 @@
 -(void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    if ([self respondsToSelector:@selector(topLayoutGuide)]) {
+
+    BOOL hasTopLayoutGuide    = [self respondsToSelector:@selector(topLayoutGuide)];
+    BOOL hasBottomLayoutGuide = [self respondsToSelector:@selector(bottomLayoutGuide)];
+
+    if (hasTopLayoutGuide || hasBottomLayoutGuide) {
         for (UIView * subview in self.view.subviews) {
             if ([subview isKindOfClass:[UIScrollView class]]){
                 UIScrollView * scrollView = (UIScrollView *)subview;
                 UIEdgeInsets currentInsets = scrollView.contentInset;
+
+                CGFloat topInset    = hasTopLayoutGuide    ? self.topLayoutGuide.length    : currentInsets.top;
+                CGFloat bottomInset = hasBottomLayoutGuide ? self.bottomLayoutGuide.length : currentInsets.bottom;
+
                 scrollView.contentInset = (UIEdgeInsets){
-                    .top = self.topLayoutGuide.length,
-                    .bottom = currentInsets.bottom,
-                    .left = currentInsets.left,
-                    .right = currentInsets.right
+                    .top    = topInset,
+                    .bottom = bottomInset,
+                    .left   = currentInsets.left,
+                    .right  = currentInsets.right
                 };
                 scrollView.scrollIndicatorInsets = scrollView.contentInset;
             }
