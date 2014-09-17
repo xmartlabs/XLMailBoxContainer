@@ -76,5 +76,10 @@
  @return array containing all childViewControllers.
  */
 @property (readonly) NSArray * swipeViewControllers;
+@property BOOL swipeEnabled;
+@property BOOL infiniteSwipe;
+@property CGFloat spaceBetweenViewControllers;
+
+-(void)moveToViewControllerAtIndex:(NSUInteger)index;
 
 @end

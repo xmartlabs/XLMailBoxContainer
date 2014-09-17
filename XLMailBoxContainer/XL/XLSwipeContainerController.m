@@ -32,6 +32,8 @@
 
 @property NSUInteger currentIndex;
 @property (nonatomic) UISegmentedControl * segmentedControl;
+@property UISwipeGestureRecognizer * swipeLeftGestureRecognizer;
+@property UISwipeGestureRecognizer * swipeRightGestureRecognizer;
 
 @end
 
@@ -40,6 +42,8 @@
 @synthesize swipeViewControllers = _swipeViewControllers;
 @synthesize currentIndex         = _currentIndex;
 @synthesize segmentedControl     = _segmentedControl;
+@synthesize swipeLeftGestureRecognizer = _swipeLeftGestureRecognizer;
+@synthesize swipeRightGestureRecognizer = _swipeRightGestureRecognizer;
 
 
 -(id)initWithViewControllers:(NSArray *)viewControllers{
@@ -49,10 +53,12 @@
 -(id)initWithViewControllers:(NSArray *)viewControllers currentIndex:(NSUInteger)currentIndex
 {
     self = [self initWithNibName:nil bundle:nil];
-    if (self)
-    {
+    if (self){
         _currentIndex = currentIndex;
         _swipeViewControllers = viewControllers;
+        _swipeEnabled = YES;
+        _infiniteSwipe = NO;
+        _spaceBetweenViewControllers = 0;
     }
     return self;
 }
@@ -60,7 +66,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+    
+    // Do any additional setup after loading the view.
     UIViewController * viewController = [self.swipeViewControllers objectAtIndex:self.currentIndex];
     // add child viewController
     [self addChildViewController:viewController];
@@ -69,13 +76,15 @@
     [self.view addSubview:viewController.view];
     // add segmented control
     [self.navigationItem setTitleView:self.segmentedControl];
-    self.view.backgroundColor = [UIColor whiteColor];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    if (self.swipeEnabled){
+        self.swipeLeftGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeEvent:)];
+        self.swipeRightGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeEvent:)];
+        [self.swipeLeftGestureRecognizer setDirection:UISwipeGestureRecognizerDirectionLeft];
+        [self.swipeRightGestureRecognizer setDirection:UISwipeGestureRecognizerDirectionRight];
+        [self.view addGestureRecognizer:self.swipeLeftGestureRecognizer];
+        [self.view addGestureRecognizer:self.swipeRightGestureRecognizer];
+        
+    }
 }
 
 
@@ -102,15 +111,14 @@
 }
 
 
--(void)changeSwipeViewController:(UISegmentedControl *)sender
+-(void)moveToViewControllerAtIndex:(NSUInteger)index
 {
-    NSInteger selectedIndex = [sender selectedSegmentIndex];
-    if (self.currentIndex != selectedIndex){
+    if (self.currentIndex != index){
         UIViewController<XLSwipeContainerChildItem> * currentController = [self.swipeViewControllers objectAtIndex:self.currentIndex];
-        UIViewController<XLSwipeContainerChildItem> * newViewController = [self.swipeViewControllers objectAtIndex:selectedIndex];
-        NSInteger x_change = self.currentIndex > selectedIndex ? self.view.frame.size.width : -self.view.frame.size.width;
+        UIViewController<XLSwipeContainerChildItem> * newViewController = [self.swipeViewControllers objectAtIndex:index];
+        NSInteger x_change = self.currentIndex > index ? (self.view.frame.size.width + self.spaceBetweenViewControllers) : -(self.view.frame.size.width + self.spaceBetweenViewControllers);
         [newViewController.view setFrame:CGRectMake(-x_change, 0, self.view.frame.size.width, self.view.frame.size.height)];
-        newViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        //newViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         if (self.navigationController){
             [self.navigationController.navigationBar setTintColor:[newViewController swipeContainerItemAssociatedColor]];
         }
@@ -132,10 +140,19 @@
                                  [currentController.view removeFromSuperview];
                                  [newViewController didMoveToParentViewController:self];
                              }
-
+                             
                          }];
-        self.currentIndex = selectedIndex;
+        self.currentIndex = index;
+        [self.segmentedControl setSelectedSegmentIndex:index];
     }
+
+}
+
+
+-(void)changeSwipeViewController:(UISegmentedControl *)sender
+{
+    NSInteger index = [sender selectedSegmentIndex];
+    [self moveToViewControllerAtIndex:index];
 }
 
 -(void)viewDidLayoutSubviews
@@ -163,6 +180,24 @@
                 scrollView.scrollIndicatorInsets = scrollView.contentInset;
             }
         }
+    }
+}
+
+
+-(void)swipeEvent:(UISwipeGestureRecognizer *)gestureRecognizer
+{
+    if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
+        if (gestureRecognizer.direction == UISwipeGestureRecognizerDirectionRight){
+            if (self.currentIndex > 0){
+                [self moveToViewControllerAtIndex:(self.currentIndex - 1)];
+            }
+        }
+        else if (gestureRecognizer.direction == UISwipeGestureRecognizerDirectionLeft){
+            if (self.currentIndex < self.swipeViewControllers.count - 1){
+                [self moveToViewControllerAtIndex:(self.currentIndex + 1)];
+            }
+        }
+
     }
 }
 
