@@ -59,6 +59,7 @@
         _swipeEnabled = YES;
         _infiniteSwipe = NO;
         _spaceBetweenViewControllers = 0;
+        _animationDuration = 0.3f;
     }
     return self;
 }
@@ -110,15 +111,15 @@
     return _segmentedControl;
 }
 
-
--(void)moveToViewControllerAtIndex:(NSUInteger)index
+-(void)moveToViewControllerAtIndex:(NSInteger)index withDirection:(XLSwipeDirection)direction
 {
+    
     if (self.currentIndex != index){
         UIViewController<XLSwipeContainerChildItem> * currentController = [self.swipeViewControllers objectAtIndex:self.currentIndex];
         UIViewController<XLSwipeContainerChildItem> * newViewController = [self.swipeViewControllers objectAtIndex:index];
-        NSInteger x_change = self.currentIndex > index ? (self.view.frame.size.width + self.spaceBetweenViewControllers) : -(self.view.frame.size.width + self.spaceBetweenViewControllers);
+        NSInteger x_change = direction == XLSwipeDirectionLeft ? (self.view.frame.size.width + self.spaceBetweenViewControllers) : -(self.view.frame.size.width + self.spaceBetweenViewControllers);
         [newViewController.view setFrame:CGRectMake(-x_change, 0, self.view.frame.size.width, self.view.frame.size.height)];
-        //newViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        newViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         if (self.navigationController){
             [self.navigationController.navigationBar setTintColor:[newViewController swipeContainerItemAssociatedColor]];
         }
@@ -127,7 +128,7 @@
         }
         [self addChildViewController:newViewController];
         [self.view addSubview:newViewController.view];
-        [UIView animateWithDuration:0.3f
+        [UIView animateWithDuration:self.animationDuration
                               delay:0.0f
                             options:UIViewAnimationOptionCurveEaseInOut
                          animations:^{
@@ -146,6 +147,17 @@
         [self.segmentedControl setSelectedSegmentIndex:index];
     }
 
+}
+
+-(void)moveToViewControllerAtIndex:(NSUInteger)index
+{
+    if (self.currentIndex < index){
+        [self moveToViewControllerAtIndex:index withDirection:XLSwipeDirectionRight];
+    }
+    else if (self.currentIndex > index){
+        [self moveToViewControllerAtIndex:index withDirection:XLSwipeDirectionLeft];
+    }
+    
 }
 
 
@@ -191,10 +203,16 @@
             if (self.currentIndex > 0){
                 [self moveToViewControllerAtIndex:(self.currentIndex - 1)];
             }
+            else if (self.infiniteSwipe){
+                [self moveToViewControllerAtIndex:(self.swipeViewControllers.count - 1) withDirection:XLSwipeDirectionLeft];
+            }
         }
         else if (gestureRecognizer.direction == UISwipeGestureRecognizerDirectionLeft){
             if (self.currentIndex < self.swipeViewControllers.count - 1){
                 [self moveToViewControllerAtIndex:(self.currentIndex + 1)];
+            }
+            else if (self.infiniteSwipe){
+                [self moveToViewControllerAtIndex:0 withDirection:XLSwipeDirectionRight];
             }
         }
 

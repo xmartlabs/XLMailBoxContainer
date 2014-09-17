@@ -1,6 +1,8 @@
 XLMailBoxContainer
 ==================
 
+By [XMARTLABS](http://xmartlabs.com).
+
 Custom container view controller ala MailBox app.
 
 `XLSwipeContainerController` is the most important class of the library. Just using this class you can get the same functionality shown on the gif bellow.

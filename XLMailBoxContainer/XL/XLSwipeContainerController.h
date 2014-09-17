@@ -47,6 +47,12 @@
 @end
 
 
+
+typedef NS_ENUM(NSUInteger, XLSwipeDirection) {
+    XLSwipeDirectionLeft,
+    XLSwipeDirectionRight
+};
+
 @interface XLSwipeContainerController : UIViewController
 
 /**
@@ -78,6 +84,7 @@
 @property (readonly) NSArray * swipeViewControllers;
 @property BOOL swipeEnabled;
 @property BOOL infiniteSwipe;
+@property NSTimeInterval animationDuration;
 @property CGFloat spaceBetweenViewControllers;
 
 -(void)moveToViewControllerAtIndex:(NSUInteger)index;
