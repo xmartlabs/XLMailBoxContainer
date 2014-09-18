@@ -20,9 +20,10 @@
 		285BE82718BE20CA00863AE4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 285BE82518BE20CA00863AE4 /* InfoPlist.strings */; };
 		285BE82918BE20CA00863AE4 /* XLMailBoxContainerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 285BE82818BE20CA00863AE4 /* XLMailBoxContainerTests.m */; };
 		285BE83918BE24CE00863AE4 /* XLSwipeContainerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 285BE83418BE24CE00863AE4 /* XLSwipeContainerController.m */; };
-		285BE83A18BE24CE00863AE4 /* XLSwipeNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 285BE83618BE24CE00863AE4 /* XLSwipeNavigationController.m */; };
+		285BE83A18BE24CE00863AE4 /* XLSegmentedSwipeNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 285BE83618BE24CE00863AE4 /* XLSegmentedSwipeNavigationController.m */; };
 		285BE84018BE278000863AE4 /* MailBoxTableChildViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 285BE83F18BE278000863AE4 /* MailBoxTableChildViewController.m */; };
 		285BE84618BEC5B300863AE4 /* MailBoxChildViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 285BE84518BEC5B300863AE4 /* MailBoxChildViewController.m */; };
+		28C0745719CB332B00D6ACA8 /* XLSegmentedSwipeContainerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C0745619CB332B00D6ACA8 /* XLSegmentedSwipeContainerController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,14 +53,16 @@
 		285BE82418BE20CA00863AE4 /* XLMailBoxContainerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "XLMailBoxContainerTests-Info.plist"; sourceTree = "<group>"; };
 		285BE82618BE20CA00863AE4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		285BE82818BE20CA00863AE4 /* XLMailBoxContainerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XLMailBoxContainerTests.m; sourceTree = "<group>"; };
-		285BE83318BE24CE00863AE4 /* XLSwipeContainerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XLSwipeContainerController.h; path = XL/XLSwipeContainerController.h; sourceTree = "<group>"; };
-		285BE83418BE24CE00863AE4 /* XLSwipeContainerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XLSwipeContainerController.m; path = XL/XLSwipeContainerController.m; sourceTree = "<group>"; };
-		285BE83518BE24CE00863AE4 /* XLSwipeNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XLSwipeNavigationController.h; path = XL/XLSwipeNavigationController.h; sourceTree = "<group>"; };
-		285BE83618BE24CE00863AE4 /* XLSwipeNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XLSwipeNavigationController.m; path = XL/XLSwipeNavigationController.m; sourceTree = "<group>"; };
-		285BE83E18BE278000863AE4 /* MailBoxTableChildViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MailBoxTableChildViewController.h; path = Demo/MailBoxTableChildViewController.h; sourceTree = "<group>"; };
-		285BE83F18BE278000863AE4 /* MailBoxTableChildViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MailBoxTableChildViewController.m; path = Demo/MailBoxTableChildViewController.m; sourceTree = "<group>"; };
-		285BE84418BEC5B300863AE4 /* MailBoxChildViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MailBoxChildViewController.h; path = Demo/MailBoxChildViewController.h; sourceTree = "<group>"; };
-		285BE84518BEC5B300863AE4 /* MailBoxChildViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MailBoxChildViewController.m; path = Demo/MailBoxChildViewController.m; sourceTree = "<group>"; };
+		285BE83318BE24CE00863AE4 /* XLSwipeContainerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = XLSwipeContainerController.h; path = XL/XLSwipeContainerController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		285BE83418BE24CE00863AE4 /* XLSwipeContainerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = XLSwipeContainerController.m; path = XL/XLSwipeContainerController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		285BE83518BE24CE00863AE4 /* XLSegmentedSwipeNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = XLSegmentedSwipeNavigationController.h; path = XL/XLSegmentedSwipeNavigationController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		285BE83618BE24CE00863AE4 /* XLSegmentedSwipeNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = XLSegmentedSwipeNavigationController.m; path = XL/XLSegmentedSwipeNavigationController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		285BE83E18BE278000863AE4 /* MailBoxTableChildViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = MailBoxTableChildViewController.h; path = Demo/MailBoxTableChildViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		285BE83F18BE278000863AE4 /* MailBoxTableChildViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = MailBoxTableChildViewController.m; path = Demo/MailBoxTableChildViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		285BE84418BEC5B300863AE4 /* MailBoxChildViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = MailBoxChildViewController.h; path = Demo/MailBoxChildViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		285BE84518BEC5B300863AE4 /* MailBoxChildViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = MailBoxChildViewController.m; path = Demo/MailBoxChildViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		28C0745519CB332B00D6ACA8 /* XLSegmentedSwipeContainerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = XLSegmentedSwipeContainerController.h; path = XL/XLSegmentedSwipeContainerController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		28C0745619CB332B00D6ACA8 /* XLSegmentedSwipeContainerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = XLSegmentedSwipeContainerController.m; path = XL/XLSegmentedSwipeContainerController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,8 +166,10 @@
 			children = (
 				285BE83318BE24CE00863AE4 /* XLSwipeContainerController.h */,
 				285BE83418BE24CE00863AE4 /* XLSwipeContainerController.m */,
-				285BE83518BE24CE00863AE4 /* XLSwipeNavigationController.h */,
-				285BE83618BE24CE00863AE4 /* XLSwipeNavigationController.m */,
+				285BE83518BE24CE00863AE4 /* XLSegmentedSwipeNavigationController.h */,
+				285BE83618BE24CE00863AE4 /* XLSegmentedSwipeNavigationController.m */,
+				28C0745519CB332B00D6ACA8 /* XLSegmentedSwipeContainerController.h */,
+				28C0745619CB332B00D6ACA8 /* XLSegmentedSwipeContainerController.m */,
 			);
 			name = XL;
 			sourceTree = "<group>";
@@ -276,8 +281,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				285BE84018BE278000863AE4 /* MailBoxTableChildViewController.m in Sources */,
-				285BE83A18BE24CE00863AE4 /* XLSwipeNavigationController.m in Sources */,
+				285BE83A18BE24CE00863AE4 /* XLSegmentedSwipeNavigationController.m in Sources */,
 				285BE83918BE24CE00863AE4 /* XLSwipeContainerController.m in Sources */,
+				28C0745719CB332B00D6ACA8 /* XLSegmentedSwipeContainerController.m in Sources */,
 				285BE81418BE20CA00863AE4 /* AppDelegate.m in Sources */,
 				285BE84618BEC5B300863AE4 /* MailBoxChildViewController.m in Sources */,
 				285BE81018BE20CA00863AE4 /* main.m in Sources */,

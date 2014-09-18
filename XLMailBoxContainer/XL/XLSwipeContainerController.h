@@ -1,8 +1,6 @@
 //
 //  XLSwipeContainerController.h
-//  XLMailBoxContainer
-//
-//  Created by Martin Barreto on 10/1/13.
+//  XLMailBoxContainer ( https://github.com/xmartlabs/XLMailBoxContainer )
 //
 //  Copyright (c) 2014 Xmartlabs ( http://xmartlabs.com )
 //
@@ -53,35 +51,41 @@ typedef NS_ENUM(NSUInteger, XLSwipeDirection) {
     XLSwipeDirectionRight
 };
 
+
+@class XLSwipeContainerController;
+
+@protocol XLSwipeContainerControllerDelegate <NSObject>
+
+-(void)swipeContainerController:(XLSwipeContainerController *)swipeContainerController willShowViewController:(UIViewController *)controller withDirection:(XLSwipeDirection)direction fromViewController:(UIViewController *)previousViewController;
+-(void)swipeContainerController:(XLSwipeContainerController *)swipeContainerController didShowViewController:(UIViewController *)controller withDirection:(XLSwipeDirection)direction fromViewController:(UIViewController *)previousViewController;
+
+@end
+
 @interface XLSwipeContainerController : UIViewController
 
 /**
  Initializes a `XLSwipeContainerController` object with child controllers contained in viewControllers parameter.
- 
  @param viewControllers ChildViewControllers to be added to XLSwipeContainerController.
- 
  @return The newly-initialized XLSwipeContainerController custom container controller.
  */
 -(id)initWithViewControllers:(NSArray *)viewControllers;
 
 /**
  Initializes a `XLSwipeContainerController` object with child controllers contained in viewControllers parameter.
- 
  This is the designated initializer.
- 
  @param viewControllers hildViewControllers to be added to XLSwipeContainerController.
- 
  @param currentIndex Index of childViewController selected by default.
- 
  @return The newly-initialized XLSwipeContainerController custom container controller.
  */
 -(id)initWithViewControllers:(NSArray *)viewControllers currentIndex:(NSUInteger)currentIndex;
-
 
 /**
  @return array containing all childViewControllers.
  */
 @property (readonly) NSArray * swipeViewControllers;
+@property (weak) id<XLSwipeContainerControllerDelegate> delegate;
+
+@property (readonly) NSUInteger currentIndex;
 @property BOOL swipeEnabled;
 @property BOOL infiniteSwipe;
 @property NSTimeInterval animationDuration;

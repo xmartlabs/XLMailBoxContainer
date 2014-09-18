@@ -1,5 +1,5 @@
 //
-//  MailBoxTableChildViewController.h
+//  XLSegmentedSwipeNavigationController.h
 //  XLMailBoxContainer ( https://github.com/xmartlabs/XLMailBoxContainer )
 //
 //  Copyright (c) 2014 Xmartlabs ( http://xmartlabs.com )
@@ -23,11 +23,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "XLSegmentedSwipeNavigationController.h"
+#import "XLSwipeContainerController.h"
 
 #import <UIKit/UIKit.h>
 
-@interface MailBoxTableChildViewController : UITableViewController <XLSwipeContainerChildItem>
+/**
+ `XLSwipeNavigationController` is just a helper to create the swipe custom container view controller and set it as the rootViewController. You don't need to use this classs at all, optionally you can create a XLSwipeContainerControllergitx
+ by your own and set it as the rootViewController of any UINavigationController.
+ */
+@interface XLSegmentedSwipeNavigationController : UINavigationController
 
+
+/**
+ Initializes and returns a newly allocated XLSwipeContainerController object, it also set up the rootViewController property with a XLSwipeContainerController instance.
+ This is the designated initializer.
+ @param fistViewController,... Variable argument list of view controllers that conforms to XLSwipeContainerItemDelegate. XLSwipeNavigationController will have as many segmented control options as view controllers passed in this parameter.
+ */
+-(id)initWithViewControllers:(UIViewController<XLSwipeContainerChildItem> *)firstViewController, ... NS_REQUIRES_NIL_TERMINATION;
 
 @end

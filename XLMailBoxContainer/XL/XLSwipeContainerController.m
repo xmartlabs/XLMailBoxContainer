@@ -1,8 +1,6 @@
 //
 //  XLSwipeContainerController.m
-//  XLMailBoxContainer
-//
-//  Created by Martin Barreto on 10/1/13.
+//  XLMailBoxContainer ( https://github.com/xmartlabs/XLMailBoxContainer )
 //
 //  Copyright (c) 2014 Xmartlabs ( http://xmartlabs.com )
 //
@@ -25,25 +23,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "XLSwipeNavigationController.h"
+#import "XLSegmentedSwipeNavigationController.h"
 #import "XLSwipeContainerController.h"
 
 @interface XLSwipeContainerController ()
 
 @property NSUInteger currentIndex;
-@property (nonatomic) UISegmentedControl * segmentedControl;
 @property UISwipeGestureRecognizer * swipeLeftGestureRecognizer;
 @property UISwipeGestureRecognizer * swipeRightGestureRecognizer;
 
 @end
 
 @implementation XLSwipeContainerController
-
-@synthesize swipeViewControllers = _swipeViewControllers;
-@synthesize currentIndex         = _currentIndex;
-@synthesize segmentedControl     = _segmentedControl;
-@synthesize swipeLeftGestureRecognizer = _swipeLeftGestureRecognizer;
-@synthesize swipeRightGestureRecognizer = _swipeRightGestureRecognizer;
 
 
 -(id)initWithViewControllers:(NSArray *)viewControllers{
@@ -57,7 +48,7 @@
         _currentIndex = currentIndex;
         _swipeViewControllers = viewControllers;
         _swipeEnabled = YES;
-        _infiniteSwipe = NO;
+        _infiniteSwipe = YES;
         _spaceBetweenViewControllers = 0;
         _animationDuration = 0.3f;
     }
@@ -75,8 +66,6 @@
     [viewController.view setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     viewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     [self.view addSubview:viewController.view];
-    // add segmented control
-    [self.navigationItem setTitleView:self.segmentedControl];
     if (self.swipeEnabled){
         self.swipeLeftGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeEvent:)];
         self.swipeRightGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeEvent:)];
@@ -88,29 +77,6 @@
     }
 }
 
-
--(UISegmentedControl *)segmentedControl
-{
-    if (_segmentedControl) return _segmentedControl;
-    NSMutableArray * segmentedControlItems = [[NSMutableArray alloc] init];
-    for (UIViewController<XLSwipeContainerChildItem> * swipContainerItemVC in self.swipeViewControllers){
-        [segmentedControlItems addObject:swipContainerItemVC.swipeContainerItemAssociatedSegmentedItem];
-    }
-    _segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentedControlItems];
-    [_segmentedControl setSelectedSegmentIndex:self.currentIndex];
-    UIViewController<XLSwipeContainerChildItem> * currentController = [self.swipeViewControllers objectAtIndex:self.currentIndex];
-    if (self.navigationController){
-        [self.navigationController.navigationBar setTintColor:[currentController swipeContainerItemAssociatedColor]];
-    }
-    else{
-        [_segmentedControl setTintColor:[currentController swipeContainerItemAssociatedColor]];
-    }
-    [_segmentedControl addTarget:self
-                          action:@selector(changeSwipeViewController:)
-                forControlEvents:UIControlEventValueChanged];
-    return _segmentedControl;
-}
-
 -(void)moveToViewControllerAtIndex:(NSInteger)index withDirection:(XLSwipeDirection)direction
 {
     
@@ -120,12 +86,9 @@
         NSInteger x_change = direction == XLSwipeDirectionLeft ? (self.view.frame.size.width + self.spaceBetweenViewControllers) : -(self.view.frame.size.width + self.spaceBetweenViewControllers);
         [newViewController.view setFrame:CGRectMake(-x_change, 0, self.view.frame.size.width, self.view.frame.size.height)];
         newViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-        if (self.navigationController){
-            [self.navigationController.navigationBar setTintColor:[newViewController swipeContainerItemAssociatedColor]];
-        }
-        else{
-            [self.segmentedControl setTintColor:[newViewController swipeContainerItemAssociatedColor]];
-        }
+        
+        
+        [self.delegate swipeContainerController:self willShowViewController:newViewController withDirection:direction fromViewController:currentController];
         [self addChildViewController:newViewController];
         [self.view addSubview:newViewController.view];
         [UIView animateWithDuration:self.animationDuration
@@ -140,11 +103,11 @@
                                  [currentController removeFromParentViewController];
                                  [currentController.view removeFromSuperview];
                                  [newViewController didMoveToParentViewController:self];
+                                 [self.delegate swipeContainerController:self didShowViewController:newViewController withDirection:direction fromViewController:currentController];
                              }
                              
                          }];
         self.currentIndex = index;
-        [self.segmentedControl setSelectedSegmentIndex:index];
     }
 
 }
@@ -158,13 +121,6 @@
         [self moveToViewControllerAtIndex:index withDirection:XLSwipeDirectionLeft];
     }
     
-}
-
-
--(void)changeSwipeViewController:(UISegmentedControl *)sender
-{
-    NSInteger index = [sender selectedSegmentIndex];
-    [self moveToViewControllerAtIndex:index];
 }
 
 -(void)viewDidLayoutSubviews

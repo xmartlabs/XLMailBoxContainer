@@ -8,7 +8,7 @@
 
 #import "MailBoxChildViewController.h"
 #import "MailBoxTableChildViewController.h"
-#import "XLSwipeNavigationController.h"
+#import "XLSegmentedSwipeNavigationController.h"
 
 #import "AppDelegate.h"
 
@@ -26,7 +26,7 @@
     MailBoxTableChildViewController * child_3 = [[MailBoxTableChildViewController alloc] initWithStyle:UITableViewStyleGrouped];
     MailBoxChildViewController * child_4 = [[MailBoxChildViewController alloc] init];
     // XLSwipeNavigationController is in charge of create the cusom container view controller (XLSwipeContainerController) and add the child view controllers previously created to it.
-    self.window.rootViewController = [[XLSwipeNavigationController alloc] initWithViewControllers:child_1, child_2, child_3, child_4, nil];
+    self.window.rootViewController = [[XLSegmentedSwipeNavigationController alloc] initWithViewControllers:child_1, child_2, child_3, child_4, nil];
     [self.window makeKeyAndVisible];
     return YES;
 }

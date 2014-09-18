@@ -1,8 +1,6 @@
 //
-//  XLSwipeNavigationController.m
-//  XLMailBoxContainer
-//
-//  Created by Martin Barreto on 10/1/13.
+//  XLSegmentedSwipeNavigationController.m
+//  XLMailBoxContainer ( https://github.com/xmartlabs/XLMailBoxContainer )
 //
 //  Copyright (c) 2014 Xmartlabs ( http://xmartlabs.com )
 //
@@ -25,11 +23,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "XLSwipeContainerController.h"
+#import "XLSegmentedSwipeContainerController.h"
+#import "XLSegmentedSwipeNavigationController.h"
 
-#import "XLSwipeNavigationController.h"
-
-@implementation XLSwipeNavigationController
+@implementation XLSegmentedSwipeNavigationController
 
 
 -(id)initWithViewControllers:(UIViewController<XLSwipeContainerChildItem> *)firstViewController, ...
@@ -48,7 +45,7 @@
                 [mutableArray addObject:eachObject];        // that isn't nil, add it to self's contents.
             va_end(argumentList);
         }
-        XLSwipeContainerController * containerController = [[XLSwipeContainerController alloc] initWithViewControllers:mutableArray];
+        XLSegmentedSwipeContainerController * containerController = [[XLSegmentedSwipeContainerController alloc] initWithViewControllers:mutableArray];
         [self setViewControllers:@[containerController]];
         
         
