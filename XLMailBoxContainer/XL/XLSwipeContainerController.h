@@ -23,6 +23,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import <UIKit/UITableViewController.h>
 #import <UIKit/UIKit.h>
 
 /**
@@ -56,12 +57,25 @@ typedef NS_ENUM(NSUInteger, XLSwipeDirection) {
 
 @protocol XLSwipeContainerControllerDelegate <NSObject>
 
+@optional
+
 -(void)swipeContainerController:(XLSwipeContainerController *)swipeContainerController willShowViewController:(UIViewController *)controller withDirection:(XLSwipeDirection)direction fromViewController:(UIViewController *)previousViewController;
 -(void)swipeContainerController:(XLSwipeContainerController *)swipeContainerController didShowViewController:(UIViewController *)controller withDirection:(XLSwipeDirection)direction fromViewController:(UIViewController *)previousViewController;
 
 @end
 
-@interface XLSwipeContainerController : UIViewController
+
+@protocol XLSwipeContainerControllerDataSource <NSObject>
+
+@required
+
+-(NSArray *)swipeContainerControllerViewControllers:(XLSwipeContainerController *)swipeContainerController;
+
+@end
+
+
+
+@interface XLSwipeContainerController : UIViewController <XLSwipeContainerControllerDelegate, XLSwipeContainerControllerDataSource>
 
 /**
  Initializes a `XLSwipeContainerController` object with child controllers contained in viewControllers parameter.
@@ -83,7 +97,9 @@ typedef NS_ENUM(NSUInteger, XLSwipeDirection) {
  @return array containing all childViewControllers.
  */
 @property (readonly) NSArray * swipeViewControllers;
-@property (weak) id<XLSwipeContainerControllerDelegate> delegate;
+@property (nonatomic, retain) IBOutlet UIView * containerView;
+@property (nonatomic, assign) IBOutlet id<XLSwipeContainerControllerDelegate> delegate;
+@property (nonatomic, assign) IBOutlet id<XLSwipeContainerControllerDataSource> dataSource;
 
 @property (readonly) NSUInteger currentIndex;
 @property BOOL swipeEnabled;
