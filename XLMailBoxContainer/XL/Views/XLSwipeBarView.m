@@ -23,7 +23,7 @@
     self = [super initWithCoder:coder];
     if (self) {
         _optionsAmount = 1;
-        _selectedOptionIndex = 1;
+        _selectedOptionIndex = 0;
         [self addSubview:self.selectedBar];
     }
     return self;
@@ -35,7 +35,7 @@
     if (self) {
         // Initialization code
         _optionsAmount = 1;
-        _selectedOptionIndex = 1;
+        _selectedOptionIndex = 0;
     }
     return self;
 }

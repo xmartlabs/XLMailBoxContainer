@@ -23,9 +23,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "XLSegmentedSwipeNavigationController.h"
-
 #import <UIKit/UIKit.h>
+#import "XLSwipeContainerController.h"
 
 @interface MailBoxTableChildViewController : UITableViewController <XLSwipeContainerChildItem>
 

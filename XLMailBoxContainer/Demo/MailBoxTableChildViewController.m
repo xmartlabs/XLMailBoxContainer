@@ -23,19 +23,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import "NSJSONSerialization+XLJSONSerialization.h"
+#import "PostCell.h"
 #import "MailBoxTableChildViewController.h"
 
-@interface MailBoxTableChildViewController ()
-
-@end
+NSString *const kCellIdentifier = @"PostCell";
 
 @implementation MailBoxTableChildViewController
+{
+    NSArray * _posts;
+    PostCell * _offScreenCell;
+}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
     if (self) {
-        // Custom initialization
+        _posts = [NSJSONSerialization postsData];
     }
     return self;
 }
@@ -43,8 +47,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
+    [self.tableView registerClass:[PostCell class] forCellReuseIdentifier:kCellIdentifier];
 }
 
 
@@ -52,24 +55,40 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
-    return 20;
+    return _posts.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    cell.textLabel.text = [NSString stringWithFormat:@"%ld item", (long)indexPath.row];
-    // Configure the cell...
+    PostCell *cell = (PostCell *) [tableView dequeueReusableCellWithIdentifier:kCellIdentifier forIndexPath:indexPath];
     
+    cell.userName.text = [_posts objectAtIndex:indexPath.row][@"post"][@"user"][@"name"];
+    cell.postDate.text = [self timeAgo:[self dateFromString:[_posts objectAtIndex:indexPath.row][@"post"][@"created_at"]]];
+    cell.postText.text = [_posts objectAtIndex:indexPath.row][@"post"][@"text"];
+    [cell.userImage setImage:[UIImage imageNamed:[cell.userName.text stringByReplacingOccurrencesOfString:@" " withString:@"_"]]];
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (!_offScreenCell)
+    {
+        _offScreenCell = (PostCell *)[self.tableView dequeueReusableCellWithIdentifier:kCellIdentifier];
+        // Dummy Data
+        _offScreenCell.userName.text = @"offscreen name";
+        _offScreenCell.postDate.text = @"7m";
+        [_offScreenCell.userImage setImage:[UIImage imageNamed:@"default-avatar"]];
+    }
+    _offScreenCell.postText.text = [_posts objectAtIndex:indexPath.row][@"post"][@"text"];
+    [_offScreenCell.contentView setNeedsLayout];
+    [_offScreenCell.contentView layoutIfNeeded];
+    CGSize size = [_offScreenCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+    return size.height + 1;
 }
 
 #pragma mark - XLSwipeContainerItemDelegate
@@ -83,5 +102,59 @@
 {
     return [UIColor blueColor];
 }
+
+
+#pragma mark - Helpers
+
+#define SECONDS_IN_A_MINUTE 60
+#define SECONDS_IN_A_HOUR  3600
+#define SECONDS_IN_A_DAY 86400
+#define SECONDS_IN_A_MONTH_OF_30_DAYS 2592000
+#define SECONDS_IN_A_YEAR_OF_MONTH_OF_30_DAYS 31104000
+
+- (NSString *)timeAgo:(NSDate *)date {
+    NSTimeInterval distanceBetweenDates = [date timeIntervalSinceDate:[NSDate date]] * (-1);
+    int distance = (int)floorf(distanceBetweenDates);
+    if (distance <= 0) {
+        return @"now";
+    }
+    else if (distance < SECONDS_IN_A_MINUTE) {
+        return   [NSString stringWithFormat:@"%ds", distance];
+    }
+    else if (distance < SECONDS_IN_A_HOUR) {
+        distance = distance / SECONDS_IN_A_MINUTE;
+        return   [NSString stringWithFormat:@"%dm", distance];
+    }
+    else if (distance < SECONDS_IN_A_DAY) {
+        distance = distance / SECONDS_IN_A_HOUR;
+        return   [NSString stringWithFormat:@"%dh", distance];
+    }
+    else if (distance < SECONDS_IN_A_MONTH_OF_30_DAYS) {
+        distance = distance / SECONDS_IN_A_DAY;
+        return   [NSString stringWithFormat:@"%dd", distance];
+    }
+    else if (distance < SECONDS_IN_A_YEAR_OF_MONTH_OF_30_DAYS) {
+        distance = distance / SECONDS_IN_A_MONTH_OF_30_DAYS;
+        return   [NSString stringWithFormat:@"%dmo", distance];
+    } else {
+        distance = distance / SECONDS_IN_A_YEAR_OF_MONTH_OF_30_DAYS;
+        return   [NSString stringWithFormat:@"%dy", distance];
+    }
+}
+
+-(NSDate *)dateFromString:(NSString *)dateString
+{
+    // date formatter
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
+    [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"];
+    // hot fix from date
+    NSRange range = [dateString rangeOfString:@"."];
+    if (range.location != NSNotFound){
+        dateString = [dateString substringToIndex:range.location];
+    }
+    return [formatter dateFromString:dateString];
+}
+
 
 @end

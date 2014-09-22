@@ -23,7 +23,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "XLSegmentedSwipeNavigationController.h"
 #import "XLSwipeContainerController.h"
 
 @interface XLSwipeContainerController ()
@@ -49,6 +48,22 @@
         _swipeViewControllers = viewControllers;
     }
     return self;
+}
+
+-(id)initWithViewCurrentIndex:(NSUInteger)index viewControllers:(UIViewController *)firstViewController, ...
+{
+    id eachObject;
+    va_list argumentList;
+    NSMutableArray * mutableArray = [[NSMutableArray alloc] init];
+    if (firstViewController)                            // The first argument isn't part of the varargs list,
+    {                                                   // so we'll handle it separately.
+        [mutableArray addObject:firstViewController];
+        va_start(argumentList, firstViewController);    // Start scanning for arguments after firstViewController.
+        while ((eachObject = va_arg(argumentList, id))) // As many times as we can get an argument of type "id"
+            [mutableArray addObject:eachObject];        // that isn't nil, add it to self's contents.
+        va_end(argumentList);
+    }
+    return [self initWithViewControllers:[mutableArray copy] currentIndex:index];
 }
 
 -(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -87,7 +102,7 @@
 {
     [super viewDidLoad];
     
-    // Do any additional setup after loading the view.
+    self.edgesForExtendedLayout = UIRectEdgeNone;
     
     if (!self.containerView){
         self.containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
@@ -100,10 +115,17 @@
     // add child viewController
     UIViewController * viewController = [self.swipeViewControllers objectAtIndex:self.currentIndex];;
     if (viewController){
+        if ([self.delegate respondsToSelector:@selector(swipeContainerController:willShowViewController:withDirection:fromViewController:)]){
+            [self.delegate swipeContainerController:self willShowViewController:viewController withDirection:XLSwipeDirectionRight fromViewController:nil];
+        }
         [self addChildViewController:viewController];
         [viewController.view setFrame:CGRectMake(0, 0, self.containerView.frame.size.width, self.containerView.frame.size.height)];
         viewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         [self.containerView addSubview:viewController.view];
+        if ([self.delegate respondsToSelector:@selector(swipeContainerController:didShowViewController:withDirection:fromViewController:)]){
+            [self.delegate swipeContainerController:self didShowViewController:viewController withDirection:XLSwipeDirectionRight fromViewController:nil];
+        }
+
     }
     if (self.swipeEnabled){
         self.swipeLeftGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeEvent:)];
@@ -169,33 +191,32 @@
     
 }
 
--(void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-
-    BOOL hasTopLayoutGuide    = [self respondsToSelector:@selector(topLayoutGuide)];
-    BOOL hasBottomLayoutGuide = [self respondsToSelector:@selector(bottomLayoutGuide)];
-
-    if (hasTopLayoutGuide || hasBottomLayoutGuide) {
-        for (UIView * subview in self.containerView.subviews) {
-            if ([subview isKindOfClass:[UIScrollView class]]){
-                UIScrollView * scrollView = (UIScrollView *)subview;
-                UIEdgeInsets currentInsets = scrollView.contentInset;
-
-                CGFloat topInset    = hasTopLayoutGuide    ? self.topLayoutGuide.length    : currentInsets.top;
-                CGFloat bottomInset = hasBottomLayoutGuide ? self.bottomLayoutGuide.length : currentInsets.bottom;
-
-                scrollView.contentInset = (UIEdgeInsets){
-                    .top    = topInset,
-                    .bottom = bottomInset,
-                    .left   = currentInsets.left,
-                    .right  = currentInsets.right
-                };
-                scrollView.scrollIndicatorInsets = scrollView.contentInset;
-            }
-        }
-    }
-}
+//-(void)viewDidLayoutSubviews
+//{
+//    [super viewDidLayoutSubviews];
+//    BOOL hasTopLayoutGuide    = [self respondsToSelector:@selector(viewDidLayoutSubviews)];
+//    BOOL hasBottomLayoutGuide = [self respondsToSelector:@selector(bottomLayoutGuide)];
+//
+//    if (hasTopLayoutGuide || hasBottomLayoutGuide) {
+//        for (UIView * subview in self.containerView.subviews) {
+//            if ([subview isKindOfClass:[UIScrollView class]]){
+//                UIScrollView * scrollView = (UIScrollView *)subview;
+//                UIEdgeInsets currentInsets = scrollView.contentInset;
+//
+//                CGFloat topInset    = hasTopLayoutGuide    ? self.topLayoutGuide.length    : currentInsets.top;
+//                CGFloat bottomInset = hasBottomLayoutGuide ? self.bottomLayoutGuide.length : currentInsets.bottom;
+//
+//                scrollView.contentInset = (UIEdgeInsets){
+//                    .top    = topInset,
+//                    .bottom = bottomInset,
+//                    .left   = currentInsets.left,
+//                    .right  = currentInsets.right
+//                };
+//                scrollView.scrollIndicatorInsets = scrollView.contentInset;
+//            }
+//        }
+//    }
+//}
 
 
 -(void)swipeEvent:(UISwipeGestureRecognizer *)gestureRecognizer

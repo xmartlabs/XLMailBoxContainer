@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Xmartlabs. All rights reserved.
 //
 
+#import "XLSegmentedSwipeContainerController.h"
 #import "MailBoxChildViewController.h"
 #import "MailBoxTableChildViewController.h"
-#import "XLSegmentedSwipeNavigationController.h"
 
 #import "AppDelegate.h"
 
@@ -25,10 +25,12 @@
     MailBoxChildViewController * child_2 = [[MailBoxChildViewController alloc] init];
     MailBoxTableChildViewController * child_3 = [[MailBoxTableChildViewController alloc] initWithStyle:UITableViewStyleGrouped];
     MailBoxChildViewController * child_4 = [[MailBoxChildViewController alloc] init];
-    // XLSwipeNavigationController is in charge of create the cusom container view controller (XLSwipeContainerController) and add the child view controllers previously created to it.
-    self.window.rootViewController = [[XLSegmentedSwipeNavigationController alloc] initWithViewControllers:child_1, child_2, child_3, child_4, nil];
+    XLSwipeContainerController * swipeContainer = [[XLSegmentedSwipeContainerController alloc] initWithViewCurrentIndex:0 viewControllers:child_1, child_2, child_3, child_4, nil];
+    UINavigationController * navController = [[UINavigationController alloc] initWithRootViewController:swipeContainer];
+    self.window.rootViewController = navController;
     [self.window makeKeyAndVisible];
     return YES;
+    
 }
 
 

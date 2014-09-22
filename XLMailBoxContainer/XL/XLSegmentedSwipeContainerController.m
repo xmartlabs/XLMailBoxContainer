@@ -63,13 +63,6 @@
     }
     _segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentedControlItems];
     [_segmentedControl setSelectedSegmentIndex:self.currentIndex];
-    UIViewController<XLSwipeContainerChildItem> * currentController = [self.swipeViewControllers objectAtIndex:self.currentIndex];
-    if (self.navigationController){
-        [self.navigationController.navigationBar setTintColor:[currentController swipeContainerItemAssociatedColor]];
-    }
-    else{
-        [_segmentedControl setTintColor:[currentController swipeContainerItemAssociatedColor]];
-    }
     [_segmentedControl addTarget:self
                           action:@selector(changeSwipeViewController:)
                 forControlEvents:UIControlEventValueChanged];
@@ -87,13 +80,21 @@
 
 -(void)swipeContainerController:(XLSwipeContainerController *)swipeContainerController willShowViewController:(UIViewController *)controller withDirection:(XLSwipeDirection)direction fromViewController:(UIViewController *)previousViewController
 {
+    if ([controller conformsToProtocol:@protocol(XLSwipeContainerChildItem)]){
+        UIViewController<XLSwipeContainerChildItem> * swipContainerItemVC = (UIViewController<XLSwipeContainerChildItem> *)controller;
+        if (self.navigationController){
+            [self.navigationController.navigationBar setTintColor:[swipContainerItemVC swipeContainerItemAssociatedColor]];
+        }
+        else{
+            [_segmentedControl setTintColor:[swipContainerItemVC swipeContainerItemAssociatedColor]];
+        }
+    }
     [self.segmentedControl setSelectedSegmentIndex:[self.swipeViewControllers indexOfObject:controller]];
 }
 
 
 -(void)swipeContainerController:(XLSwipeContainerController *)swipeContainerController didShowViewController:(UIViewController *)controller withDirection:(XLSwipeDirection)direction fromViewController:(UIViewController *)previousViewController
 {
-    
 }
 
 @end

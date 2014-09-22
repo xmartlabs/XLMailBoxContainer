@@ -93,6 +93,8 @@ typedef NS_ENUM(NSUInteger, XLSwipeDirection) {
  */
 -(id)initWithViewControllers:(NSArray *)viewControllers currentIndex:(NSUInteger)currentIndex;
 
+-(id)initWithViewCurrentIndex:(NSUInteger)index viewControllers:(UIViewController *)firstViewController, ... NS_REQUIRES_NIL_TERMINATION;
+
 /**
  @return array containing all childViewControllers.
  */
