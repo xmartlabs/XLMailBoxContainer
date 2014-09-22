@@ -27,4 +27,6 @@
 
 @interface XLSegmentedSwipeContainerController : XLSwipeContainerController
 
+@property (nonatomic, readonly) UISegmentedControl * segmentedControl;
+
 @end

@@ -137,6 +137,11 @@
     }
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+}
+
 -(void)moveToViewControllerAtIndex:(NSInteger)index withDirection:(XLSwipeDirection)direction
 {
     

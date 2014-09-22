@@ -86,7 +86,7 @@
             [self.navigationController.navigationBar setTintColor:[swipContainerItemVC swipeContainerItemAssociatedColor]];
         }
         else{
-            [_segmentedControl setTintColor:[swipContainerItemVC swipeContainerItemAssociatedColor]];
+            [self.segmentedControl setTintColor:[swipContainerItemVC swipeContainerItemAssociatedColor]];
         }
     }
     [self.segmentedControl setSelectedSegmentIndex:[self.swipeViewControllers indexOfObject:controller]];

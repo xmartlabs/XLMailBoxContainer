@@ -9,6 +9,6 @@
 #import "XLBarSwipeContainerController.h"
 #import "XLSwipeContainerController.h"
 
-@interface StoryContainerViewController : XLBarSwipeContainerController <XLSwipeContainerControllerDataSource, XLSwipeContainerControllerDelegate>
+@interface BarContainerViewController : XLBarSwipeContainerController <XLSwipeContainerControllerDataSource, XLSwipeContainerControllerDelegate>
 
 @end

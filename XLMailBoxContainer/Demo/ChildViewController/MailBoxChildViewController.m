@@ -61,7 +61,7 @@
 
 -(UIColor *)swipeContainerItemAssociatedColor
 {
-    return [UIColor orangeColor];
+    return [UIColor blackColor];
 }
 
 @end

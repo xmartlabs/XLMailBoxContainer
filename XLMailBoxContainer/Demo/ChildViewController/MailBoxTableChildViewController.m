@@ -100,7 +100,7 @@ NSString *const kCellIdentifier = @"PostCell";
 
 -(UIColor *)swipeContainerItemAssociatedColor
 {
-    return [UIColor blueColor];
+    return [UIColor whiteColor];
 }
 
 

@@ -8,13 +8,13 @@
 
 #import "MailBoxTableChildViewController.h"
 #import "MailBoxChildViewController.h"
-#import "StoryContainerViewController.h"
+#import "BarContainerViewController.h"
 
-@interface StoryContainerViewController ()
+@interface BarContainerViewController ()
 
 @end
 
-@implementation StoryContainerViewController
+@implementation BarContainerViewController
 
 
 - (instancetype)initWithCoder:(NSCoder *)coder
