@@ -83,6 +83,7 @@
     [self updateSelectedBarPositionWithAnimation:animated];
 }
 
+
 -(void)setOptionsAmount:(NSUInteger)optionsAmount animated:(BOOL)animated
 {
     self.optionsAmount = optionsAmount;

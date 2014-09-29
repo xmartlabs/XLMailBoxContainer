@@ -28,7 +28,7 @@
 
 @interface XLSegmentedSwipeContainerController () <XLSwipeContainerControllerDelegate>
 
-@property (nonatomic) UISegmentedControl * segmentedControl;
+@property (nonatomic) IBOutlet UISegmentedControl * segmentedControl;
 
 @end
 
@@ -47,9 +47,28 @@
 -(void)viewDidLoad
 {
     [super viewDidLoad];
-    // add segmented control
-    [self.navigationItem setTitleView:self.segmentedControl];
-    self.delegate = self;
+    // initialize segmented control
+    if (!self.segmentedControl.superview) {
+        [self.navigationItem setTitleView:self.segmentedControl];
+    }
+    [self.segmentedControl removeAllSegments];
+    [self.segmentedControl addTarget:self
+                              action:@selector(changeSwipeViewController:)
+                    forControlEvents:UIControlEventValueChanged];
+    [self.swipeViewControllers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSAssert([obj conformsToProtocol:@protocol(XLSwipeContainerChildItem)], @"child view controller must conform to XLSwipeContainerChildItem");
+        UIViewController<XLSwipeContainerChildItem> * childViewController = (UIViewController<XLSwipeContainerChildItem> *)obj;
+        if ([childViewController respondsToSelector:@selector(imageForSwipeContainer:)]){
+
+            [self.segmentedControl insertSegmentWithImage:[childViewController imageForSwipeContainer:self]  atIndex:idx animated:NO];
+        }
+        else{
+            [self.segmentedControl insertSegmentWithTitle:[childViewController nameForSwipeContainer:self] atIndex:idx animated:NO];
+        }
+
+    }];
+    [self.segmentedControl setSelectedSegmentIndex:self.currentIndex];
+
 }
 
 
@@ -57,15 +76,7 @@
 -(UISegmentedControl *)segmentedControl
 {
     if (_segmentedControl) return _segmentedControl;
-    NSMutableArray * segmentedControlItems = [[NSMutableArray alloc] init];
-    for (UIViewController<XLSwipeContainerChildItem> * swipContainerItemVC in self.swipeViewControllers){
-        [segmentedControlItems addObject:swipContainerItemVC.swipeContainerItemAssociatedSegmentedItem];
-    }
-    _segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentedControlItems];
-    [_segmentedControl setSelectedSegmentIndex:self.currentIndex];
-    [_segmentedControl addTarget:self
-                          action:@selector(changeSwipeViewController:)
-                forControlEvents:UIControlEventValueChanged];
+    _segmentedControl = [[UISegmentedControl alloc] init];
     return _segmentedControl;
 }
 
@@ -80,14 +91,9 @@
 
 -(void)swipeContainerController:(XLSwipeContainerController *)swipeContainerController willShowViewController:(UIViewController *)controller withDirection:(XLSwipeDirection)direction fromViewController:(UIViewController *)previousViewController
 {
-    if ([controller conformsToProtocol:@protocol(XLSwipeContainerChildItem)]){
-        UIViewController<XLSwipeContainerChildItem> * swipContainerItemVC = (UIViewController<XLSwipeContainerChildItem> *)controller;
-        if (self.navigationController){
-            [self.navigationController.navigationBar setTintColor:[swipContainerItemVC swipeContainerItemAssociatedColor]];
-        }
-        else{
-            [self.segmentedControl setTintColor:[swipContainerItemVC swipeContainerItemAssociatedColor]];
-        }
+    UIViewController<XLSwipeContainerChildItem> * childViewController = (UIViewController<XLSwipeContainerChildItem> *)controller;
+    if ([childViewController respondsToSelector:@selector(colorForSwipeContainer:)]){
+        [self.segmentedControl setTintColor:[childViewController colorForSwipeContainer:self]];
     }
     [self.segmentedControl setSelectedSegmentIndex:[self.swipeViewControllers indexOfObject:controller]];
 }

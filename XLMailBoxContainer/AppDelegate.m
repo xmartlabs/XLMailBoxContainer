@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Xmartlabs. All rights reserved.
 //
 
+#import "XLJSONSerialization.h"
 #import "XLSegmentedSwipeContainerController.h"
 #import "MailBoxChildViewController.h"
 #import "MailBoxTableChildViewController.h"
@@ -16,6 +17,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [[XLJSONSerialization sharedInstance] postsData];
 //    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 //    // Override point for customization after application launch.
 //    self.window.backgroundColor = [UIColor whiteColor];

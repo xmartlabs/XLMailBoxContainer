@@ -74,7 +74,6 @@
 
 -(void)swipeContainerController:(XLSwipeContainerController *)swipeContainerController didShowViewController:(UIViewController *)controller withDirection:(XLSwipeDirection)direction fromViewController:(UIViewController *)previousViewController
 {
-    [self.swipeBar moveToIndex:[self.swipeViewControllers indexOfObject:controller] animated:YES];
 }
 
 

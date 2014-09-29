@@ -23,7 +23,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "NSJSONSerialization+XLJSONSerialization.h"
+#import "XLJSONSerialization.h"
 #import "PostCell.h"
 #import "MailBoxTableChildViewController.h"
 
@@ -39,7 +39,7 @@ NSString *const kCellIdentifier = @"PostCell";
 {
     self = [super initWithStyle:style];
     if (self) {
-        _posts = [NSJSONSerialization postsData];
+        _posts = [[XLJSONSerialization sharedInstance] postsData];
     }
     return self;
 }
@@ -70,6 +70,7 @@ NSString *const kCellIdentifier = @"PostCell";
     cell.userName.text = [_posts objectAtIndex:indexPath.row][@"post"][@"user"][@"name"];
     cell.postDate.text = [self timeAgo:[self dateFromString:[_posts objectAtIndex:indexPath.row][@"post"][@"created_at"]]];
     cell.postText.text = [_posts objectAtIndex:indexPath.row][@"post"][@"text"];
+    [cell.postText setPreferredMaxLayoutWidth:self.view.bounds.size.width];
     [cell.userImage setImage:[UIImage imageNamed:[cell.userName.text stringByReplacingOccurrencesOfString:@" " withString:@"_"]]];
     return cell;
 }
@@ -85,6 +86,7 @@ NSString *const kCellIdentifier = @"PostCell";
         [_offScreenCell.userImage setImage:[UIImage imageNamed:@"default-avatar"]];
     }
     _offScreenCell.postText.text = [_posts objectAtIndex:indexPath.row][@"post"][@"text"];
+    [_offScreenCell.postText setPreferredMaxLayoutWidth:self.view.bounds.size.width];
     [_offScreenCell.contentView setNeedsLayout];
     [_offScreenCell.contentView layoutIfNeeded];
     CGSize size = [_offScreenCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
@@ -93,12 +95,12 @@ NSString *const kCellIdentifier = @"PostCell";
 
 #pragma mark - XLSwipeContainerItemDelegate
 
--(id)swipeContainerItemAssociatedSegmentedItem
+-(NSString *)nameForSwipeContainer:(XLSwipeContainerController *)swipeContainer
 {
-    return @"Table";
+    return @"Table View";
 }
 
--(UIColor *)swipeContainerItemAssociatedColor
+-(UIColor *)colorForSwipeContainer:(XLSwipeContainerController *)swipeContainer
 {
     return [UIColor whiteColor];
 }

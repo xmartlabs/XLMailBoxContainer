@@ -54,14 +54,14 @@
 
 #pragma mark - XLSwipeContainerItemDelegate
 
--(id)swipeContainerItemAssociatedSegmentedItem
+-(NSString *)nameForSwipeContainer:(XLSwipeContainerController *)swipeContainer
 {
     return @"View";
 }
 
--(UIColor *)swipeContainerItemAssociatedColor
+-(UIColor *)colorForSwipeContainer:(XLSwipeContainerController *)swipeContainer
 {
-    return [UIColor blackColor];
+    return [UIColor whiteColor];
 }
 
 @end

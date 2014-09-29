@@ -8,8 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSJSONSerialization (XLJSONSerialization)
+@interface XLJSONSerialization : NSObject
 
-+(NSArray *)postsData;
++ (instancetype)sharedInstance;
+
+@property (readonly) NSArray * postsData;
 
 @end

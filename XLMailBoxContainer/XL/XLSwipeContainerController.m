@@ -116,14 +116,14 @@
     UIViewController * viewController = [self.swipeViewControllers objectAtIndex:self.currentIndex];;
     if (viewController){
         if ([self.delegate respondsToSelector:@selector(swipeContainerController:willShowViewController:withDirection:fromViewController:)]){
-            [self.delegate swipeContainerController:self willShowViewController:viewController withDirection:XLSwipeDirectionRight fromViewController:nil];
+            [self.delegate swipeContainerController:self willShowViewController:viewController withDirection:XLSwipeDirectionNone fromViewController:nil];
         }
         [self addChildViewController:viewController];
         [viewController.view setFrame:CGRectMake(0, 0, self.containerView.frame.size.width, self.containerView.frame.size.height)];
         viewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         [self.containerView addSubview:viewController.view];
         if ([self.delegate respondsToSelector:@selector(swipeContainerController:didShowViewController:withDirection:fromViewController:)]){
-            [self.delegate swipeContainerController:self didShowViewController:viewController withDirection:XLSwipeDirectionRight fromViewController:nil];
+            [self.delegate swipeContainerController:self didShowViewController:viewController withDirection:XLSwipeDirectionNone fromViewController:nil];
         }
 
     }
@@ -148,7 +148,7 @@
     if ([self canMoveToIndex:index]){
         UIViewController<XLSwipeContainerChildItem> * currentController = [self.swipeViewControllers objectAtIndex:self.currentIndex];
         UIViewController<XLSwipeContainerChildItem> * newViewController = [self.swipeViewControllers objectAtIndex:index];
-        NSInteger x_change = direction == XLSwipeDirectionLeft ? (self.containerView.frame.size.width + self.spaceBetweenViewControllers) : -(self.containerView.frame.size.width + self.spaceBetweenViewControllers);
+        NSInteger x_change = direction == XLSwipeDirectionRight ? (self.containerView.frame.size.width + self.spaceBetweenViewControllers) : -(self.containerView.frame.size.width + self.spaceBetweenViewControllers);
         [newViewController.view setFrame:CGRectMake(-x_change, 0, self.containerView.frame.size.width, self.containerView.frame.size.height)];
         newViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         
@@ -187,10 +187,10 @@
     }
     else{
         if (self.currentIndex < index){
-            [self moveToViewControllerAtIndex:index withDirection:XLSwipeDirectionRight];
+            [self moveToViewControllerAtIndex:index withDirection:XLSwipeDirectionLeft];
         }
         else if (self.currentIndex > index){
-            [self moveToViewControllerAtIndex:index withDirection:XLSwipeDirectionLeft];
+            [self moveToViewControllerAtIndex:index withDirection:XLSwipeDirectionRight];
         }
     }
     
@@ -232,7 +232,7 @@
                 [self moveToViewControllerAtIndex:(self.currentIndex - 1)];
             }
             else if (self.infiniteSwipe){
-                [self moveToViewControllerAtIndex:(self.swipeViewControllers.count - 1) withDirection:XLSwipeDirectionLeft];
+                [self moveToViewControllerAtIndex:(self.swipeViewControllers.count - 1) withDirection:XLSwipeDirectionRight];
             }
         }
         else if (gestureRecognizer.direction == UISwipeGestureRecognizerDirectionLeft){
@@ -240,7 +240,7 @@
                 [self moveToViewControllerAtIndex:(self.currentIndex + 1)];
             }
             else if (self.infiniteSwipe){
-                [self moveToViewControllerAtIndex:0 withDirection:XLSwipeDirectionRight];
+                [self moveToViewControllerAtIndex:0 withDirection:XLSwipeDirectionLeft];
             }
         }
 

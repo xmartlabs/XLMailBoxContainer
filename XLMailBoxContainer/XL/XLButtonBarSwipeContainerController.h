@@ -11,6 +11,6 @@
 
 @interface XLButtonBarSwipeContainerController : XLSwipeContainerController
 
-@property (nonatomic) IBOutlet XLSwipeButtonBarView * swipeBar;
+@property (readonly, nonatomic) XLSwipeButtonBarView * swipeBar;
 
 @end

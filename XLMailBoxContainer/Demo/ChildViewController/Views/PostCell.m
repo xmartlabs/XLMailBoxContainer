@@ -98,7 +98,7 @@
                                                                         metrics:metrics
                                                                           views:views]];
     
-    [result addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[name]-[date]-|"
+    [result addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[name]-[date]-20-|"
                                                                         options:NSLayoutFormatAlignAllBaseline
                                                                         metrics:metrics
                                                                           views:views]];
@@ -108,12 +108,12 @@
                                                                         metrics:metrics
                                                                           views:views]];
     
-    [result addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[name]-[text]-|"
+    [result addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[name]-[text]-20-|"
                                                                         options:NSLayoutFormatAlignAllLeft
                                                                         metrics:metrics
                                                                           views:views]];
     
-    [result addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[text]-|"
+    [result addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[text]-20-|"
                                                                         options:NSLayoutFormatAlignAllBaseline
                                                                         metrics:metrics
                                                                           views:views]];

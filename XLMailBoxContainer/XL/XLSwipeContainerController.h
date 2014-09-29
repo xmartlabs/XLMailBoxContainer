@@ -26,6 +26,8 @@
 #import <UIKit/UITableViewController.h>
 #import <UIKit/UIKit.h>
 
+@class XLSwipeContainerController;
+
 /**
  The `XLSwipeContainerItemDelegate` protocol is adopted by child controllers of XLSwipeContainerController. Each child view controller has to define a color and either a image or string in order to create the related UISegmentedControl option and update the color accordingly when the selected child view controller change.
  */
@@ -33,15 +35,12 @@
 
 @required
 
-/**
- @return UIImage or NSString used as UISegmentedControl item of child viewController.
- */
-- (id)swipeContainerItemAssociatedSegmentedItem;
+- (NSString *)nameForSwipeContainer:(XLSwipeContainerController *)swipeContainer;
 
-/**
- @return UIColor used when child controller is selected. The tintColor of UINavigationBar will change to this color when the UISegmentedControl option related to child viewController is selected.
- */
-- (UIColor *)swipeContainerItemAssociatedColor;
+@optional
+
+- (UIImage *)imageForSwipeContainer:(XLSwipeContainerController *)swipeContainer;
+- (UIColor *)colorForSwipeContainer:(XLSwipeContainerController *)swipeContainer;
 
 @end
 
@@ -49,11 +48,12 @@
 
 typedef NS_ENUM(NSUInteger, XLSwipeDirection) {
     XLSwipeDirectionLeft,
-    XLSwipeDirectionRight
+    XLSwipeDirectionRight,
+    XLSwipeDirectionNone
 };
 
 
-@class XLSwipeContainerController;
+
 
 @protocol XLSwipeContainerControllerDelegate <NSObject>
 

@@ -8,17 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol XLSwipeButtonBarView
+#import "XLSwipeContainerController.h"
 
-@end
 
-@interface XLSwipeButtonBarView : UIView
+@interface XLSwipeButtonBarView : UICollectionView
 
 @property (readonly, nonatomic) UIView * selectedBar;
-@property (readonly, nonatomic) UIScrollView * scrollView;
+@property UIFont * labelFont;
+@property NSUInteger leftRightMargin;
 
--(id)initWithFrame:(CGRect)frame options:(NSArray *)options selectedOptionIndex:(NSUInteger)selectedOptionIndex;
--(void)moveToIndex:(NSUInteger)index animated:(BOOL)animated;
--(void)setOptionsAmount:(NSUInteger)optionsAmount animated:(BOOL)animated;
+-(void)moveToIndex:(NSUInteger)index animated:(BOOL)animated swipeDirection:(XLSwipeDirection)swipeDirection;
+
+
+
 
 @end
