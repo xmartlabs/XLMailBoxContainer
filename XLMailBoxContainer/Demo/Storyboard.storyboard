@@ -3,6 +3,7 @@
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7026.1"/>
+        <capability name="Constraints with attributes relative to the layout margin" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Segmented Container View Controller-->
@@ -93,7 +94,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9rp-Lg-ckk">
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9rp-Lg-ckk">
                                 <rect key="frame" x="0.0" y="64" width="320" height="455"/>
                                 <connections>
                                     <segue destination="KF9-Il-rUn" kind="embed" id="PEH-Jc-gva"/>
@@ -101,6 +102,12 @@
                             </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="9rp-Lg-ckk" firstAttribute="top" secondItem="sYC-OQ-Mga" secondAttribute="bottom" id="Bkl-Sr-KoE"/>
+                            <constraint firstItem="LUh-C3-i05" firstAttribute="top" secondItem="9rp-Lg-ckk" secondAttribute="bottom" id="Mel-a7-tS5"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="9rp-Lg-ckk" secondAttribute="trailing" constant="-16" id="UY1-sK-nWK"/>
+                            <constraint firstItem="9rp-Lg-ckk" firstAttribute="leading" secondItem="TXd-Bq-amB" secondAttribute="leadingMargin" constant="-16" id="vBT-dV-v2T"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Buttons Example" id="anf-yu-jjb"/>
                 </viewController>
@@ -228,9 +235,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="FH0-FX-IMd" customClass="XLSwipeButtonBarView">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="FH0-FX-IMd" customClass="XLSwipeButtonBarView">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                 <color key="backgroundColor" red="0.027450980390000001" green="0.72549019609999998" blue="0.60784313729999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="43" id="5Gm-jk-c1U"/>
+                                </constraints>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="q1I-j6-uGl">
                                     <size key="itemSize" width="79" height="42"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -264,12 +274,21 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mcV-6K-P6b">
-                                <rect key="frame" x="0.0" y="42" width="320" height="413"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mcV-6K-P6b">
+                                <rect key="frame" x="0.0" y="43" width="320" height="412"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="FH0-FX-IMd" firstAttribute="leading" secondItem="nbo-eG-9Of" secondAttribute="leadingMargin" constant="-16" id="9Vk-yi-Pua"/>
+                            <constraint firstItem="mcV-6K-P6b" firstAttribute="leading" secondItem="nbo-eG-9Of" secondAttribute="leadingMargin" constant="-16" id="Pg7-5s-ee0"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="mcV-6K-P6b" secondAttribute="trailing" constant="-16" id="aTp-Uc-bXX"/>
+                            <constraint firstItem="DoJ-0a-eFQ" firstAttribute="top" secondItem="mcV-6K-P6b" secondAttribute="bottom" id="nPm-AC-pyc"/>
+                            <constraint firstItem="FH0-FX-IMd" firstAttribute="top" secondItem="PhK-DQ-FzX" secondAttribute="bottom" id="s00-0U-AXh"/>
+                            <constraint firstItem="mcV-6K-P6b" firstAttribute="top" secondItem="FH0-FX-IMd" secondAttribute="bottom" id="stn-uq-Zft"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="FH0-FX-IMd" secondAttribute="trailing" constant="-16" id="z4H-9f-Vyy"/>
+                        </constraints>
                     </view>
                     <toolbarItems/>
                     <connections>
