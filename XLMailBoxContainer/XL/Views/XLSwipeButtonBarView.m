@@ -42,7 +42,6 @@
 {
     _selectedOptionIndex = 0;
     [self addSubview:self.selectedBar];
-    
 }
 
 
@@ -72,19 +71,10 @@
             }
             
         }
-//        [self scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.selectedOptionIndex inSection:0] atScrollPosition:UICollectionViewScrollPosition animated:YES];
     }
     else{
         NSLog(@"Log");
     }
-//    else{
-//        cell = [self.dataSource collectionView:self cellForItemAtIndexPath:[NSIndexPath indexPathForItem:self.selectedOptionIndex inSection:0]];
-//        if ([self visibleCells].count > 0){
-//            
-//            [self scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.selectedOptionIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionLeft animated:animation];
-//        }
-//    }
-//    cell = [self.dataSource collectionView:self cellForItemAtIndexPath:[NSIndexPath indexPathForItem:self.selectedOptionIndex inSection:0]];
     frame.size.width = cell.frame.size.width;
     frame.origin.x = cell.frame.origin.x;
     frame.origin.y = cell.frame.size.height - frame.size.height;

@@ -58,15 +58,9 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-}
-
-
--(void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [self.swipeBar moveToIndex:self.currentIndex animated:NO swipeDirection:XLSwipeDirectionNone];
-
-    
+    UICollectionViewLayoutAttributes *attributes = [self.swipeBar layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForItem:self.currentIndex inSection:0]];
+    CGRect cellRect = attributes.frame;
+    [self.swipeBar.selectedBar setFrame:CGRectMake(cellRect.origin.x, self.swipeBar.frame.size.height - 5, cellRect.size.width, 5)];
 }
 
 
@@ -112,23 +106,12 @@
 #pragma mark - UICollectionViewDelegate
 
 
-//-(void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    if([indexPath item] == ((NSIndexPath*)[[self.swipeBar indexPathsForVisibleItems] lastObject]).item){
-//        //end of loading
-//        //for example [activityIndicator stopAnimating];
-//        [self.swipeBar moveToIndex:self.currentIndex animated:NO];
-//        
-//    }
-//}
-
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     [self.swipeBar moveToIndex:indexPath.item animated:YES swipeDirection:XLSwipeDirectionNone];
     [self moveToViewControllerAtIndex:indexPath.item];
     
 }
-
 
 #pragma merk - UICollectionViewDataSource
 
