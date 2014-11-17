@@ -38,4 +38,9 @@
 }
 
 
+-(CGFloat)spaceBetweenViewControllers
+{
+    return 150.0;
+}
+
 @end

@@ -19,9 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.infiniteSwipe = FALSE;
     [self.swipeBar.selectedBar setBackgroundColor:[UIColor orangeColor]];
-    self.spaceBetweenViewControllers = 50.0;
 }
 
 #pragma mark - XLSwipeContainerControllerDataSource

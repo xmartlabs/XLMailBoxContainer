@@ -21,7 +21,6 @@
 {
     self = [super initWithCoder:coder];
     if (self) {
-        [self moveToViewControllerAtIndex:2];
     }
     return self;
 }
@@ -33,7 +32,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self.swipeBar.selectedBar setBackgroundColor:[UIColor orangeColor]];
-    self.spaceBetweenViewControllers = 150.0;
     self.animationDuration = 0.3;
 }
 
