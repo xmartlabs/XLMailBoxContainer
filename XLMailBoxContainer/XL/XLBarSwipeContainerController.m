@@ -30,11 +30,6 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
-}
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -48,13 +43,6 @@
     }
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-
 -(XLSwipeBarView *)swipeBar
 {
     if (_swipeBar) return _swipeBar;
@@ -67,14 +55,11 @@
 
 #pragma mark - XLSwipeContainerControllerDelegate
 
--(void)swipeContainerController:(XLSwipeContainerController *)swipeContainerController willShowViewController:(UIViewController *)controller withDirection:(XLSwipeDirection)direction fromViewController:(UIViewController *)previousViewController
+-(void)swipeContainerController:(XLSwipeContainerController *)swipeContainerController updateIndicatorToViewController:(UIViewController *)viewController fromViewController:(UIViewController *)fromViewController
 {
-    [self.swipeBar moveToIndex:[self.swipeViewControllers indexOfObject:controller] animated:YES];
+    [self.swipeBar moveToIndex:[self.swipeViewControllers indexOfObject:viewController] animated:YES];
 }
 
--(void)swipeContainerController:(XLSwipeContainerController *)swipeContainerController didShowViewController:(UIViewController *)controller withDirection:(XLSwipeDirection)direction fromViewController:(UIViewController *)previousViewController
-{
-}
 
 
 @end

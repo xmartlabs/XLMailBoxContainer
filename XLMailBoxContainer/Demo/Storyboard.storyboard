@@ -289,15 +289,15 @@
                                 </cells>
                             </collectionView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mcV-6K-P6b" customClass="UIScrollView">
-                                <rect key="frame" x="0.0" y="43" width="320" height="412"/>
+                                <rect key="frame" x="-5" y="43" width="330" height="412"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="FH0-FX-IMd" firstAttribute="leading" secondItem="nbo-eG-9Of" secondAttribute="leadingMargin" constant="-16" id="9Vk-yi-Pua"/>
-                            <constraint firstItem="mcV-6K-P6b" firstAttribute="leading" secondItem="nbo-eG-9Of" secondAttribute="leadingMargin" constant="-16" id="Pg7-5s-ee0"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="mcV-6K-P6b" secondAttribute="trailing" constant="-16" id="aTp-Uc-bXX"/>
+                            <constraint firstAttribute="trailing" secondItem="mcV-6K-P6b" secondAttribute="trailing" constant="-5" id="Ext-Th-Ehh"/>
+                            <constraint firstItem="mcV-6K-P6b" firstAttribute="leading" secondItem="nbo-eG-9Of" secondAttribute="leading" constant="-5" id="MLz-uv-OaE"/>
                             <constraint firstItem="DoJ-0a-eFQ" firstAttribute="top" secondItem="mcV-6K-P6b" secondAttribute="bottom" id="nPm-AC-pyc"/>
                             <constraint firstItem="FH0-FX-IMd" firstAttribute="top" secondItem="PhK-DQ-FzX" secondAttribute="bottom" id="s00-0U-AXh"/>
                             <constraint firstItem="mcV-6K-P6b" firstAttribute="top" secondItem="FH0-FX-IMd" secondAttribute="bottom" id="stn-uq-Zft"/>

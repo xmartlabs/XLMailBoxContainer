@@ -79,14 +79,16 @@
 
 #pragma mark - XLSwipeContainerControllerDelegate
 
--(void)swipeContainerController:(XLSwipeContainerController *)swipeContainerController willShowViewController:(UIViewController *)controller withDirection:(XLSwipeDirection)direction fromViewController:(UIViewController *)previousViewController
+-(void)swipeContainerController:(XLSwipeContainerController *)swipeContainerController updateIndicatorToViewController:(UIViewController *)viewController fromViewController:(UIViewController *)fromViewController
 {
-    [self.swipeBar moveToIndex:[self.swipeViewControllers indexOfObject:controller] animated:YES swipeDirection:direction];
+    NSUInteger newIndex = [self.swipeViewControllers indexOfObject:viewController];
+    XLSwipeDirection direction = XLSwipeDirectionLeft;
+    if (newIndex < [self.swipeViewControllers indexOfObject:fromViewController]){
+        direction = XLSwipeDirectionRight;
+    }
+    [self.swipeBar moveToIndex:newIndex animated:YES swipeDirection:direction];
 }
 
--(void)swipeContainerController:(XLSwipeContainerController *)swipeContainerController didShowViewController:(UIViewController *)controller withDirection:(XLSwipeDirection)direction fromViewController:(UIViewController *)previousViewController
-{
-}
 
 
 #pragma merk - UICollectionViewDelegateFlowLayout

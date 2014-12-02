@@ -54,14 +54,11 @@ typedef NS_ENUM(NSUInteger, XLSwipeDirection) {
 
 
 
-
 @protocol XLSwipeContainerControllerDelegate <NSObject>
 
 @optional
 
--(void)swipeContainerController:(XLSwipeContainerController *)swipeContainerController willShowViewController:(UIViewController *)controller withDirection:(XLSwipeDirection)direction fromViewController:(UIViewController *)previousViewController;
--(void)swipeContainerController:(XLSwipeContainerController *)swipeContainerController didShowViewController:(UIViewController *)controller withDirection:(XLSwipeDirection)direction fromViewController:(UIViewController *)previousViewController;
--(CGFloat)spaceBetweenViewControllers;
+-(void)swipeContainerController:(XLSwipeContainerController *)swipeContainerController updateIndicatorToViewController:(UIViewController *)toViewController fromViewController:(UIViewController *)fromViewController;
 
 @end
 

@@ -79,18 +79,13 @@
 
 #pragma mark - XLSwipeContainerControllerDelegate
 
--(void)swipeContainerController:(XLSwipeContainerController *)swipeContainerController willShowViewController:(UIViewController *)controller withDirection:(XLSwipeDirection)direction fromViewController:(UIViewController *)previousViewController
+-(void)swipeContainerController:(XLSwipeContainerController *)swipeContainerController updateIndicatorToViewController:(UIViewController *)viewController fromViewController:(UIViewController *)fromViewController
 {
-    UIViewController<XLSwipeContainerChildItem> * childViewController = (UIViewController<XLSwipeContainerChildItem> *)controller;
+    UIViewController<XLSwipeContainerChildItem> * childViewController = (UIViewController<XLSwipeContainerChildItem> *)viewController;
     if ([childViewController respondsToSelector:@selector(colorForSwipeContainer:)]){
         [self.segmentedControl setTintColor:[childViewController colorForSwipeContainer:self]];
     }
-    [self.segmentedControl setSelectedSegmentIndex:[self.swipeViewControllers indexOfObject:controller]];
-}
-
-
--(void)swipeContainerController:(XLSwipeContainerController *)swipeContainerController didShowViewController:(UIViewController *)controller withDirection:(XLSwipeDirection)direction fromViewController:(UIViewController *)previousViewController
-{
+    [self.segmentedControl setSelectedSegmentIndex:[self.swipeViewControllers indexOfObject:childViewController]];
 }
 
 @end
