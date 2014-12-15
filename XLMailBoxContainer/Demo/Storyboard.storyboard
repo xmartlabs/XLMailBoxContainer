@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6206.8" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="ptL-BW-nEP">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="ptL-BW-nEP">
     <dependencies>
-        <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7026.1"/>
-        <capability name="Constraints with attributes relative to the layout margin" minToolsVersion="6.0"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Segmented Container View Controller-->
@@ -15,10 +15,23 @@
                         <viewControllerLayoutGuide type="bottom" id="HdL-Q7-Anl"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="BPt-hn-p4R">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D5t-1q-KDh">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                            </scrollView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="D5t-1q-KDh" firstAttribute="top" secondItem="lwA-FU-jT1" secondAttribute="bottom" id="57b-HV-bZv"/>
+                            <constraint firstItem="D5t-1q-KDh" firstAttribute="leading" secondItem="BPt-hn-p4R" secondAttribute="leading" id="ROY-9D-t0I"/>
+                            <constraint firstAttribute="trailing" secondItem="D5t-1q-KDh" secondAttribute="trailing" id="eaT-9S-B6g"/>
+                            <constraint firstItem="HdL-Q7-Anl" firstAttribute="top" secondItem="D5t-1q-KDh" secondAttribute="bottom" id="mYL-zm-zb0"/>
+                        </constraints>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout" top="YES"/>
                     <navigationItem key="navigationItem" id="l1f-vB-6A8">
                         <nil key="title"/>
                         <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="31B-gy-WIH">
@@ -32,6 +45,7 @@
                         </segmentedControl>
                     </navigationItem>
                     <connections>
+                        <outlet property="containerView" destination="D5t-1q-KDh" id="EwQ-Ub-iYS"/>
                         <outlet property="segmentedControl" destination="31B-gy-WIH" id="TxS-id-BP5"/>
                     </connections>
                 </viewController>
@@ -128,31 +142,31 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="srh-qY-UAa" customClass="XLSwipeBarView">
-                                <rect key="frame" x="0.0" y="-3" width="320" height="8"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="5"/>
                                 <color key="backgroundColor" red="0.029917803763441025" green="0.92659837372448983" blue="0.78518703254703159" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="8" id="235-q8-1Uq"/>
+                                    <constraint firstAttribute="height" constant="5" id="EuL-ap-Nyh"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Feg-AS-35w">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" alwaysBounceHorizontal="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gaM-gk-dVJ">
                                 <rect key="frame" x="0.0" y="5" width="320" height="393"/>
-                                <color key="backgroundColor" red="0.72549019609999998" green="0.2377216154" blue="0.40632525800000002" alpha="1" colorSpace="calibratedRGB"/>
-                            </view>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="Feg-AS-35w" secondAttribute="trailing" id="D3G-q3-GMe"/>
-                            <constraint firstItem="Feg-AS-35w" firstAttribute="top" secondItem="srh-qY-UAa" secondAttribute="bottom" id="QGb-hy-ptP"/>
-                            <constraint firstItem="srh-qY-UAa" firstAttribute="top" secondItem="hGu-f8-VlE" secondAttribute="bottom" constant="-3" id="SKf-Pr-mZo"/>
-                            <constraint firstItem="srh-qY-UAa" firstAttribute="leading" secondItem="fnu-Fx-A6b" secondAttribute="leading" id="UPf-sJ-uu2"/>
-                            <constraint firstAttribute="trailing" secondItem="srh-qY-UAa" secondAttribute="trailing" id="UsI-77-zZw"/>
-                            <constraint firstItem="Feg-AS-35w" firstAttribute="leading" secondItem="fnu-Fx-A6b" secondAttribute="leading" id="WXM-ZW-PUv"/>
-                            <constraint firstItem="Twz-Ee-IJq" firstAttribute="top" secondItem="Feg-AS-35w" secondAttribute="bottom" id="ht1-H4-G4F"/>
+                            <constraint firstAttribute="trailing" secondItem="srh-qY-UAa" secondAttribute="trailing" id="NOC-hJ-B3n"/>
+                            <constraint firstItem="gaM-gk-dVJ" firstAttribute="top" secondItem="srh-qY-UAa" secondAttribute="bottom" id="PWm-Hj-8ij"/>
+                            <constraint firstItem="Twz-Ee-IJq" firstAttribute="top" secondItem="gaM-gk-dVJ" secondAttribute="bottom" id="XIC-x4-8zR"/>
+                            <constraint firstItem="srh-qY-UAa" firstAttribute="top" secondItem="hGu-f8-VlE" secondAttribute="bottom" id="clp-Ty-ewx"/>
+                            <constraint firstAttribute="trailing" secondItem="gaM-gk-dVJ" secondAttribute="trailing" id="d54-qR-N0V"/>
+                            <constraint firstItem="gaM-gk-dVJ" firstAttribute="leading" secondItem="fnu-Fx-A6b" secondAttribute="leading" id="tbZ-mZ-r06"/>
+                            <constraint firstItem="srh-qY-UAa" firstAttribute="leading" secondItem="fnu-Fx-A6b" secondAttribute="leading" id="wjd-Ul-s0i"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
                     <connections>
-                        <outlet property="containerView" destination="Feg-AS-35w" id="5FG-Y1-r3z"/>
+                        <outlet property="containerView" destination="gaM-gk-dVJ" id="NqV-Sh-lY6"/>
                         <outlet property="swipeBar" destination="srh-qY-UAa" id="ni7-Mb-rtv"/>
                     </connections>
                 </viewController>
@@ -183,10 +197,10 @@
         <!--Navigation Controller-->
         <scene sceneID="gqT-2d-jBf">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="g7J-zS-0bu" sceneMemberID="viewController">
+                <navigationController id="g7J-zS-0bu" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" systemItem="mostViewed" id="cv3-rF-uFc"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="TRx-vY-PeE">
+                    <navigationBar key="navigationBar" opaque="NO" contentMode="scaleToFill" translucent="NO" id="TRx-vY-PeE">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.027450980390000001" green="0.72549019609999998" blue="0.60784313729999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -274,16 +288,16 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mcV-6K-P6b">
-                                <rect key="frame" x="0.0" y="43" width="320" height="412"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mcV-6K-P6b" customClass="UIScrollView">
+                                <rect key="frame" x="-5" y="43" width="330" height="412"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="FH0-FX-IMd" firstAttribute="leading" secondItem="nbo-eG-9Of" secondAttribute="leadingMargin" constant="-16" id="9Vk-yi-Pua"/>
-                            <constraint firstItem="mcV-6K-P6b" firstAttribute="leading" secondItem="nbo-eG-9Of" secondAttribute="leadingMargin" constant="-16" id="Pg7-5s-ee0"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="mcV-6K-P6b" secondAttribute="trailing" constant="-16" id="aTp-Uc-bXX"/>
+                            <constraint firstAttribute="trailing" secondItem="mcV-6K-P6b" secondAttribute="trailing" constant="-5" id="Ext-Th-Ehh"/>
+                            <constraint firstItem="mcV-6K-P6b" firstAttribute="leading" secondItem="nbo-eG-9Of" secondAttribute="leading" constant="-5" id="MLz-uv-OaE"/>
                             <constraint firstItem="DoJ-0a-eFQ" firstAttribute="top" secondItem="mcV-6K-P6b" secondAttribute="bottom" id="nPm-AC-pyc"/>
                             <constraint firstItem="FH0-FX-IMd" firstAttribute="top" secondItem="PhK-DQ-FzX" secondAttribute="bottom" id="s00-0U-AXh"/>
                             <constraint firstItem="mcV-6K-P6b" firstAttribute="top" secondItem="FH0-FX-IMd" secondAttribute="bottom" id="stn-uq-Zft"/>
@@ -304,9 +318,6 @@
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4">
-            <size key="portraitSize" width="320" height="568"/>
-            <size key="landscapeSize" width="568" height="320"/>
-        </simulatedScreenMetrics>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
 </document>

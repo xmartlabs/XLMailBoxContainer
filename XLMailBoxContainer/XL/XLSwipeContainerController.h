@@ -54,13 +54,11 @@ typedef NS_ENUM(NSUInteger, XLSwipeDirection) {
 
 
 
-
 @protocol XLSwipeContainerControllerDelegate <NSObject>
 
 @optional
 
--(void)swipeContainerController:(XLSwipeContainerController *)swipeContainerController willShowViewController:(UIViewController *)controller withDirection:(XLSwipeDirection)direction fromViewController:(UIViewController *)previousViewController;
--(void)swipeContainerController:(XLSwipeContainerController *)swipeContainerController didShowViewController:(UIViewController *)controller withDirection:(XLSwipeDirection)direction fromViewController:(UIViewController *)previousViewController;
+-(void)swipeContainerController:(XLSwipeContainerController *)swipeContainerController updateIndicatorToViewController:(UIViewController *)toViewController fromViewController:(UIViewController *)fromViewController;
 
 @end
 
@@ -75,7 +73,7 @@ typedef NS_ENUM(NSUInteger, XLSwipeDirection) {
 
 
 
-@interface XLSwipeContainerController : UIViewController <XLSwipeContainerControllerDelegate, XLSwipeContainerControllerDataSource>
+@interface XLSwipeContainerController : UIViewController <XLSwipeContainerControllerDelegate, XLSwipeContainerControllerDataSource, UIScrollViewDelegate>
 
 /**
  Initializes a `XLSwipeContainerController` object with child controllers contained in viewControllers parameter.
@@ -99,16 +97,15 @@ typedef NS_ENUM(NSUInteger, XLSwipeDirection) {
  @return array containing all childViewControllers.
  */
 @property (readonly) NSArray * swipeViewControllers;
-@property (nonatomic, retain) IBOutlet UIView * containerView;
+@property (nonatomic, retain) IBOutlet UIScrollView * containerView;
 @property (nonatomic, assign) IBOutlet id<XLSwipeContainerControllerDelegate> delegate;
 @property (nonatomic, assign) IBOutlet id<XLSwipeContainerControllerDataSource> dataSource;
 
 @property (readonly) NSUInteger currentIndex;
 @property BOOL swipeEnabled;
-@property BOOL infiniteSwipe;
 @property NSTimeInterval animationDuration;
-@property CGFloat spaceBetweenViewControllers;
 
 -(void)moveToViewControllerAtIndex:(NSUInteger)index;
+-(void)moveToViewController:(UIViewController *)viewController;
 
 @end

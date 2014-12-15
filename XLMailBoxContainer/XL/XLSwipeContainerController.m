@@ -27,14 +27,20 @@
 
 @interface XLSwipeContainerController ()
 
-@property NSUInteger currentIndex;
-@property UISwipeGestureRecognizer * swipeLeftGestureRecognizer;
-@property UISwipeGestureRecognizer * swipeRightGestureRecognizer;
+@property (nonatomic) NSUInteger currentIndex;
 
 @end
 
 @implementation XLSwipeContainerController
+{
+    NSUInteger _lastPageNumber;
+    CGFloat _lastContentOffset;
+    NSUInteger _pageBeforeRotate;
+}
 
+@synthesize currentIndex = _currentIndex;
+
+#pragma maek - initializers
 
 -(id)initWithViewControllers:(NSArray *)viewControllers{
     return [self initWithViewControllers:viewControllers currentIndex:0];
@@ -55,8 +61,8 @@
     id eachObject;
     va_list argumentList;
     NSMutableArray * mutableArray = [[NSMutableArray alloc] init];
-    if (firstViewController)                            // The first argument isn't part of the varargs list,
-    {                                                   // so we'll handle it separately.
+    if (firstViewController){                           // The first argument isn't part of the varargs list,
+                                                        // so we'll handle it separately.
         [mutableArray addObject:firstViewController];
         va_start(argumentList, firstViewController);    // Start scanning for arguments after firstViewController.
         while ((eachObject = va_arg(argumentList, id))) // As many times as we can get an argument of type "id"
@@ -91,169 +97,91 @@
 {
     _currentIndex = 0;
     _swipeEnabled = YES;
-    _infiniteSwipe = YES;
-    _spaceBetweenViewControllers = 0;
     _animationDuration = 0.3f;
     _delegate = self;
     _dataSource = self;
+    _lastContentOffset = 0.0f;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.edgesForExtendedLayout = UIRectEdgeNone;
-    
     if (!self.containerView){
-        self.containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+        self.containerView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds))];
         self.containerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+
         [self.view addSubview:self.containerView];
     }
+    self.containerView.bounces = YES;
+    [self.containerView setAlwaysBounceHorizontal:YES];
+    [self.containerView setAlwaysBounceVertical:NO];
+    self.containerView.scrollsToTop = NO;
+    self.containerView.delegate = self;
+    self.containerView.showsVerticalScrollIndicator = NO;
+    self.containerView.showsHorizontalScrollIndicator = NO;
+    self.containerView.pagingEnabled = YES;
+    
     if (self.dataSource){
         _swipeViewControllers = [self.dataSource swipeContainerControllerViewControllers:self];
     }
+    self.containerView.contentSize = CGSizeMake(CGRectGetWidth(self.containerView.bounds) * self.swipeViewControllers.count, 1.0);;
+    
     // add child viewController
-    UIViewController * viewController = [self.swipeViewControllers objectAtIndex:self.currentIndex];;
+    CGFloat childPosition = [self offsetForChildIndex:self.currentIndex];
+    UIViewController * viewController = [self.swipeViewControllers objectAtIndex:self.currentIndex];
     if (viewController){
-        if ([self.delegate respondsToSelector:@selector(swipeContainerController:willShowViewController:withDirection:fromViewController:)]){
-            [self.delegate swipeContainerController:self willShowViewController:viewController withDirection:XLSwipeDirectionNone fromViewController:nil];
-        }
         [self addChildViewController:viewController];
-        [viewController.view setFrame:CGRectMake(0, 0, self.containerView.frame.size.width, self.containerView.frame.size.height)];
+        [viewController.view setFrame:CGRectMake(childPosition, 0, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.containerView.bounds))];
         viewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         [self.containerView addSubview:viewController.view];
-        if ([self.delegate respondsToSelector:@selector(swipeContainerController:didShowViewController:withDirection:fromViewController:)]){
-            [self.delegate swipeContainerController:self didShowViewController:viewController withDirection:XLSwipeDirectionNone fromViewController:nil];
-        }
-
-    }
-    if (self.swipeEnabled){
-        self.swipeLeftGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeEvent:)];
-        self.swipeRightGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeEvent:)];
-        [self.swipeLeftGestureRecognizer setDirection:UISwipeGestureRecognizerDirectionLeft];
-        [self.swipeRightGestureRecognizer setDirection:UISwipeGestureRecognizerDirectionRight];
-        [self.containerView addGestureRecognizer:self.swipeLeftGestureRecognizer];
-        [self.containerView addGestureRecognizer:self.swipeRightGestureRecognizer];
+        [viewController didMoveToParentViewController:self];
     }
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self.containerView setContentOffset:CGPointMake([self pageOffsetForChildIndex:self.currentIndex], 0) animated:NO];
 }
 
--(void)moveToViewControllerAtIndex:(NSInteger)index withDirection:(XLSwipeDirection)direction
-{
-    
-    if ([self canMoveToIndex:index]){
-        UIViewController<XLSwipeContainerChildItem> * currentController = [self.swipeViewControllers objectAtIndex:self.currentIndex];
-        UIViewController<XLSwipeContainerChildItem> * newViewController = [self.swipeViewControllers objectAtIndex:index];
-        NSInteger x_change = direction == XLSwipeDirectionRight ? (self.containerView.frame.size.width + self.spaceBetweenViewControllers) : -(self.containerView.frame.size.width + self.spaceBetweenViewControllers);
-        [newViewController.view setFrame:CGRectMake(-x_change, 0, self.containerView.frame.size.width, self.containerView.frame.size.height)];
-        newViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-        
-        if ([self.delegate respondsToSelector:@selector(swipeContainerController:willShowViewController:withDirection:fromViewController:)]){
-            [self.delegate swipeContainerController:self willShowViewController:newViewController withDirection:direction fromViewController:currentController];
-        }
-        [self addChildViewController:newViewController];
-        [self.containerView addSubview:newViewController.view];
-        __typeof__(self) __weak weakSelf = self;
-        [UIView animateWithDuration:self.animationDuration
-                              delay:0.0f
-                            options:UIViewAnimationOptionCurveEaseInOut
-                         animations:^{
-                             [currentController.view setFrame:CGRectMake(currentController.view.frame.origin.x + x_change, currentController.view.frame.origin.y, currentController.view.frame.size.width, currentController.view.frame.size.height)];
-                             [newViewController.view setFrame:CGRectMake(0, newViewController.view.frame.origin.y, newViewController.view.frame.size.width, newViewController.view.frame.size.height)];
-                         }
-                         completion:^(BOOL finished) {
-                             if (finished){
-                                 [currentController removeFromParentViewController];
-                                 [currentController.view removeFromSuperview];
-                                 [newViewController didMoveToParentViewController:weakSelf];
-                                 if ([weakSelf.delegate respondsToSelector:@selector(swipeContainerController:didShowViewController:withDirection:fromViewController:)]){
-                                     [weakSelf.delegate swipeContainerController:weakSelf didShowViewController:newViewController withDirection:direction fromViewController:currentController];
-                                 }
-                             }
-                         }];
-        self.currentIndex = index;
-    }
 
-}
+#pragma mark - move to another view controller
 
 -(void)moveToViewControllerAtIndex:(NSUInteger)index
+{
+    [self moveToViewControllerAtIndex:index animated:YES];
+}
+
+-(void)moveToViewControllerAtIndex:(NSInteger)index withDirection:(XLSwipeDirection)direction animated:(BOOL)animated
+{
+    [self.containerView setContentOffset:CGPointMake([self pageOffsetForChildIndex:index], 0) animated:animated];
+}
+
+-(void)moveToViewControllerAtIndex:(NSUInteger)index animated:(bool)animated
 {
     if (![self isViewLoaded]){
         self.currentIndex = index;
     }
     else{
         if (self.currentIndex < index){
-            [self moveToViewControllerAtIndex:index withDirection:XLSwipeDirectionLeft];
+            [self moveToViewControllerAtIndex:index withDirection:XLSwipeDirectionLeft animated:YES];
         }
         else if (self.currentIndex > index){
-            [self moveToViewControllerAtIndex:index withDirection:XLSwipeDirectionRight];
+            [self moveToViewControllerAtIndex:index withDirection:XLSwipeDirectionRight animated:YES];
         }
     }
-    
 }
 
-//-(void)viewDidLayoutSubviews
-//{
-//    [super viewDidLayoutSubviews];
-//    BOOL hasTopLayoutGuide    = [self respondsToSelector:@selector(viewDidLayoutSubviews)];
-//    BOOL hasBottomLayoutGuide = [self respondsToSelector:@selector(bottomLayoutGuide)];
-//
-//    if (hasTopLayoutGuide || hasBottomLayoutGuide) {
-//        for (UIView * subview in self.containerView.subviews) {
-//            if ([subview isKindOfClass:[UIScrollView class]]){
-//                UIScrollView * scrollView = (UIScrollView *)subview;
-//                UIEdgeInsets currentInsets = scrollView.contentInset;
-//
-//                CGFloat topInset    = hasTopLayoutGuide    ? self.topLayoutGuide.length    : currentInsets.top;
-//                CGFloat bottomInset = hasBottomLayoutGuide ? self.bottomLayoutGuide.length : currentInsets.bottom;
-//
-//                scrollView.contentInset = (UIEdgeInsets){
-//                    .top    = topInset,
-//                    .bottom = bottomInset,
-//                    .left   = currentInsets.left,
-//                    .right  = currentInsets.right
-//                };
-//                scrollView.scrollIndicatorInsets = scrollView.contentInset;
-//            }
-//        }
-//    }
-//}
 
-
--(void)swipeEvent:(UISwipeGestureRecognizer *)gestureRecognizer
+-(void)moveToViewController:(UIViewController *)viewController
 {
-    if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
-        if (gestureRecognizer.direction == UISwipeGestureRecognizerDirectionRight){
-            if (self.currentIndex > 0){
-                [self moveToViewControllerAtIndex:(self.currentIndex - 1)];
-            }
-            else if (self.infiniteSwipe){
-                [self moveToViewControllerAtIndex:(self.swipeViewControllers.count - 1) withDirection:XLSwipeDirectionRight];
-            }
-        }
-        else if (gestureRecognizer.direction == UISwipeGestureRecognizerDirectionLeft){
-            if (self.currentIndex < self.swipeViewControllers.count - 1){
-                [self moveToViewControllerAtIndex:(self.currentIndex + 1)];
-            }
-            else if (self.infiniteSwipe){
-                [self moveToViewControllerAtIndex:0 withDirection:XLSwipeDirectionLeft];
-            }
-        }
-
-    }
+    [self moveToViewControllerAtIndex:[self.swipeViewControllers indexOfObject:viewController]];
 }
+
 
 #pragma mark - XLSwipeContainerControllerDelegate
 
--(void)swipeContainerController:(XLSwipeContainerController *)swipeContainerController willShowViewController:(UIViewController *)controller withDirection:(XLSwipeDirection)direction fromViewController:(UIViewController *)previousViewController
-{
-}
-
--(void)swipeContainerController:(XLSwipeContainerController *)swipeContainerController didShowViewController:(UIViewController *)controller withDirection:(XLSwipeDirection)direction fromViewController:(UIViewController *)previousViewController
+-(void)swipeContainerController:(XLSwipeContainerController *)swipeContainerController updateIndicatorToViewController:(UIViewController *)toViewController fromViewController:(UIViewController *)fromViewController
 {
 }
 
@@ -270,7 +198,145 @@
 
 -(BOOL)canMoveToIndex:(NSUInteger)index
 {
-    return (self.currentIndex != index && self.delegate && self.swipeViewControllers.count > index);
+    return (self.currentIndex != index && self.swipeViewControllers.count > index);
+}
+
+-(CGFloat)pageOffsetForChildIndex:(NSUInteger)index
+{
+    return (index * CGRectGetWidth(self.containerView.bounds));
+}
+
+-(CGFloat)offsetForChildIndex:(NSUInteger)index
+{
+    return (index * CGRectGetWidth(self.containerView.bounds) + ((CGRectGetWidth(self.containerView.bounds) - CGRectGetWidth(self.view.bounds)) * 0.5));
+}
+
+-(CGFloat)offsetForChildViewController:(UIViewController *)viewController
+{
+    NSInteger index = [self.swipeViewControllers indexOfObject:viewController];
+    if (index == NSNotFound){
+        @throw [NSException exceptionWithName:NSRangeException reason:nil userInfo:nil];
+    }
+    return [self offsetForChildIndex:index];
+}
+
+-(NSUInteger)pageForContentOffset:(CGFloat)contentOffset
+{
+    return (contentOffset + (0.5f * [self pageWidth])) / [self pageWidth];
+}
+
+-(CGFloat)pageWidth
+{
+    return CGRectGetWidth(self.containerView.bounds);
+}
+
+-(CGFloat)scrollPercentage
+{
+    return fmodf(self.containerView.contentOffset.x, [self pageWidth]) / [self pageWidth];
+}
+
+-(void)updateContent
+{
+    NSArray * childViewControllers = self.swipeViewControllers;
+    self.containerView.contentSize = CGSizeMake(CGRectGetWidth(self.containerView.bounds) * childViewControllers.count, self.containerView.contentSize.height);
+    NSUInteger currentPage = [self pageForContentOffset:self.containerView.contentOffset.x];
+    if (currentPage != self.currentIndex){
+        self.currentIndex = currentPage;
+    }
+
+    [childViewControllers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        UIViewController * childController = (UIViewController *)obj;
+        CGFloat pageOffsetForChild = [self pageOffsetForChildIndex:idx];
+        if (fabs(self.containerView.contentOffset.x - pageOffsetForChild) < CGRectGetWidth(self.containerView.bounds)){
+            if (![childController parentViewController]){
+                [self addChildViewController:childController];
+                [childController didMoveToParentViewController:self];
+                CGFloat childPosition = [self offsetForChildIndex:idx];
+                [childController.view setFrame:CGRectMake(childPosition, 0, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.containerView.bounds))];
+                childController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+                [self.containerView addSubview:childController.view];
+            }
+            else{
+                CGFloat childPosition = [self offsetForChildIndex:idx];
+                [childController.view setFrame:CGRectMake(childPosition, 0, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.containerView.bounds))];
+                childController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+            }
+        }
+        else{
+            if ([childController parentViewController]){
+                [childController.view removeFromSuperview];
+                [childController willMoveToParentViewController:nil];
+                [childController removeFromParentViewController];
+            }
+        }
+    }];
+}
+
+
+#pragma mark - UIScrollViewDelegte
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (self.containerView == scrollView){
+        //  pan direction
+        XLSwipeDirection direction = XLSwipeDirectionNone;
+        if (scrollView.contentOffset.x > _lastContentOffset){
+            direction = XLSwipeDirectionLeft;
+        }
+        else if (scrollView.contentOffset.x < _lastContentOffset){
+            direction = XLSwipeDirectionRight;
+        }
+        [self updateContent];
+    }
+}
+
+
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    if (self.containerView == scrollView){
+        _lastPageNumber = [self pageForContentOffset:scrollView.contentOffset.x];
+        _lastContentOffset = scrollView.contentOffset.x;
+    }
+}
+
+-(void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+}
+
+
+#pragma mark - Properties
+
+
+-(NSUInteger)currentIndex
+{
+    return _currentIndex;
+}
+
+-(void)setCurrentIndex:(NSUInteger)currentIndex
+{
+    UIViewController * fromViewController = [self.swipeViewControllers objectAtIndex:_currentIndex];
+    _currentIndex = currentIndex;
+    // invoke delegate method
+    if ([self.delegate respondsToSelector:@selector(swipeContainerController:updateIndicatorToViewController:fromViewController:)]){
+        [self.delegate swipeContainerController:self updateIndicatorToViewController:[self.swipeViewControllers objectAtIndex:_currentIndex] fromViewController:fromViewController];
+    }
+    //
+}
+
+#pragma mark - Orientation
+
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    _pageBeforeRotate = self.currentIndex;
+}
+
+-(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    self.currentIndex = _pageBeforeRotate;
+    self.containerView.contentSize = CGSizeMake(CGRectGetWidth(self.containerView.bounds) * self.swipeViewControllers.count, self.containerView.contentSize.height);
+    [self.containerView setContentOffset:CGPointMake([self pageOffsetForChildIndex:_pageBeforeRotate], 0) animated:NO];
+    
+    [self updateContent];
 }
 
 
