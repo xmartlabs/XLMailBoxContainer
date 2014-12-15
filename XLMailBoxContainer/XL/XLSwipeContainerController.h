@@ -73,7 +73,7 @@ typedef NS_ENUM(NSUInteger, XLSwipeDirection) {
 
 
 
-@interface XLSwipeContainerController : UIViewController <XLSwipeContainerControllerDelegate, XLSwipeContainerControllerDataSource>
+@interface XLSwipeContainerController : UIViewController <XLSwipeContainerControllerDelegate, XLSwipeContainerControllerDataSource, UIScrollViewDelegate>
 
 /**
  Initializes a `XLSwipeContainerController` object with child controllers contained in viewControllers parameter.

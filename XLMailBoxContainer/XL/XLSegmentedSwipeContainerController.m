@@ -29,10 +29,29 @@
 @interface XLSegmentedSwipeContainerController () <XLSwipeContainerControllerDelegate>
 
 @property (nonatomic) IBOutlet UISegmentedControl * segmentedControl;
+@property (nonatomic) BOOL shouldUpdateSegmentedControl;
 
 @end
 
 @implementation XLSegmentedSwipeContainerController
+
+-(id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self){
+        self.shouldUpdateSegmentedControl = YES;
+    }
+    return self;
+}
+
+-(instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self){
+        self.shouldUpdateSegmentedControl = YES;
+    }
+    return self;
+}
 
 -(void)viewDidLoad
 {
@@ -74,6 +93,8 @@
 -(void)changeSwipeViewController:(UISegmentedControl *)sender
 {
     NSInteger index = [sender selectedSegmentIndex];
+    [self swipeContainerController:self updateIndicatorToViewController:[[self.dataSource swipeContainerControllerViewControllers:self] objectAtIndex:index] fromViewController:nil];
+    self.shouldUpdateSegmentedControl = NO;
     [self moveToViewControllerAtIndex:index];
 }
 
@@ -81,11 +102,22 @@
 
 -(void)swipeContainerController:(XLSwipeContainerController *)swipeContainerController updateIndicatorToViewController:(UIViewController *)viewController fromViewController:(UIViewController *)fromViewController
 {
-    UIViewController<XLSwipeContainerChildItem> * childViewController = (UIViewController<XLSwipeContainerChildItem> *)viewController;
-    if ([childViewController respondsToSelector:@selector(colorForSwipeContainer:)]){
-        [self.segmentedControl setTintColor:[childViewController colorForSwipeContainer:self]];
+    if (self.shouldUpdateSegmentedControl){
+        UIViewController<XLSwipeContainerChildItem> * childViewController = (UIViewController<XLSwipeContainerChildItem> *)viewController;
+        if ([childViewController respondsToSelector:@selector(colorForSwipeContainer:)]){
+            [self.segmentedControl setTintColor:[childViewController colorForSwipeContainer:self]];
+        }
+        [self.segmentedControl setSelectedSegmentIndex:[self.swipeViewControllers indexOfObject:childViewController]];
     }
-    [self.segmentedControl setSelectedSegmentIndex:[self.swipeViewControllers indexOfObject:childViewController]];
+}
+
+
+#pragma mark - UIScrollViewDelegate
+
+-(void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+    [super scrollViewDidEndScrollingAnimation:scrollView];
+    self.shouldUpdateSegmentedControl = YES;
 }
 
 @end

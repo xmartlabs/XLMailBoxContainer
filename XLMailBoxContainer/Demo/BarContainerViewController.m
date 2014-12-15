@@ -11,11 +11,12 @@
 #import "BarContainerViewController.h"
 
 @interface BarContainerViewController ()
-
 @end
 
 @implementation BarContainerViewController
-
+{
+    NSArray * _swipeChildViewControllers;
+}
 
 - (instancetype)initWithCoder:(NSCoder *)coder
 {
@@ -39,12 +40,14 @@
 
 -(NSArray *)swipeContainerControllerViewControllers:(XLSwipeContainerController *)swipeContainerController
 {
+    if (_swipeChildViewControllers) return _swipeChildViewControllers;
     // create child view controllers that will be managed by XLSwipeContainerController
     MailBoxTableChildViewController * child_1 = [[MailBoxTableChildViewController alloc] initWithStyle:UITableViewStylePlain];
     MailBoxChildViewController * child_2 = [[MailBoxChildViewController alloc] init];
     MailBoxTableChildViewController * child_3 = [[MailBoxTableChildViewController alloc] initWithStyle:UITableViewStyleGrouped];
     MailBoxChildViewController * child_4 = [[MailBoxChildViewController alloc] init];
-    return @[child_1, child_2, child_3, child_4];
+    _swipeChildViewControllers = @[child_1, child_2, child_3, child_4];
+    return _swipeChildViewControllers;
 }
 
 @end

@@ -11,6 +11,7 @@
 @interface XLButtonBarSwipeContainerController () <UICollectionViewDelegate, UICollectionViewDataSource>
 
 @property (nonatomic) IBOutlet XLSwipeButtonBarView * swipeBar;
+@property (nonatomic) BOOL shouldUpdateSegmentedControl;
 
 @end
 
@@ -81,12 +82,14 @@
 
 -(void)swipeContainerController:(XLSwipeContainerController *)swipeContainerController updateIndicatorToViewController:(UIViewController *)viewController fromViewController:(UIViewController *)fromViewController
 {
-    NSUInteger newIndex = [self.swipeViewControllers indexOfObject:viewController];
-    XLSwipeDirection direction = XLSwipeDirectionLeft;
-    if (newIndex < [self.swipeViewControllers indexOfObject:fromViewController]){
-        direction = XLSwipeDirectionRight;
+    if (self.shouldUpdateSegmentedControl){
+        NSUInteger newIndex = [self.swipeViewControllers indexOfObject:viewController];
+        XLSwipeDirection direction = XLSwipeDirectionLeft;
+        if (newIndex < [self.swipeViewControllers indexOfObject:fromViewController]){
+            direction = XLSwipeDirectionRight;
+        }
+        [self.swipeBar moveToIndex:newIndex animated:YES swipeDirection:direction];
     }
-    [self.swipeBar moveToIndex:newIndex animated:YES swipeDirection:direction];
 }
 
 
@@ -111,8 +114,8 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     [self.swipeBar moveToIndex:indexPath.item animated:YES swipeDirection:XLSwipeDirectionNone];
-    [self moveToViewControllerAtIndex:indexPath.item];
-    
+    self.shouldUpdateSegmentedControl = NO;
+    [self moveToViewControllerAtIndex:indexPath.item];  
 }
 
 #pragma merk - UICollectionViewDataSource
@@ -138,6 +141,16 @@
     return swipeCell;
 }
 
+
+#pragma mark - UIScrollViewDelegate
+
+-(void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+    [super scrollViewDidEndScrollingAnimation:scrollView];
+    if (scrollView == self.containerView){
+        self.shouldUpdateSegmentedControl = YES;
+    }
+}
 
 
 @end

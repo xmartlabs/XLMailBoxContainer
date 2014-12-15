@@ -72,9 +72,6 @@
             
         }
     }
-    else{
-        NSLog(@"Log");
-    }
     frame.size.width = cell.frame.size.width;
     frame.origin.x = cell.frame.origin.x;
     frame.origin.y = cell.frame.size.height - frame.size.height;
@@ -100,34 +97,5 @@
     return _selectedBar;
 }
 
-
-
-
-#pragma mark - Helpers
-
-//-(void)reloadOptions
-//{
-//    NSArray * subviews = self.scrollView.subviews;
-//    // Remove all subviews
-//    for (UIView * view in subviews) {
-//        if (view != self.selectedBar){
-//            [view removeFromSuperview];
-//        }
-//    }
-//    CGFloat width = 0;
-//    for (NSString * option in self.options) {
-//        UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
-//        [button setTitle:option forState:UIControlStateNormal];
-//        button.contentEdgeInsets = UIEdgeInsetsMake(button.contentEdgeInsets.top, 20, button.contentEdgeInsets.bottom, 20);
-//        button.titleLabel.textAlignment = NSTextAlignmentCenter;
-//        [button sizeToFit];
-//        CGRect buttonFrame = button.frame;
-//        buttonFrame.origin.x = width;
-//        button.frame = buttonFrame;
-//        width += button.frame.size.width;
-//        [self.scrollView addSubview:button];
-//    }
-//    
-//}
 
 @end
