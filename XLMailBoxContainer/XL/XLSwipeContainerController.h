@@ -102,8 +102,7 @@ typedef NS_ENUM(NSUInteger, XLSwipeDirection) {
 @property (nonatomic, assign) IBOutlet id<XLSwipeContainerControllerDataSource> dataSource;
 
 @property (readonly) NSUInteger currentIndex;
-@property BOOL swipeEnabled;
-@property NSTimeInterval animationDuration;
+@property BOOL skipIntermediateViewControllers;
 
 -(void)moveToViewControllerAtIndex:(NSUInteger)index;
 -(void)moveToViewController:(UIViewController *)viewController;

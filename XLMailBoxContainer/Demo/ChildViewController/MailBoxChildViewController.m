@@ -1,5 +1,5 @@
 //
-//  MailBoxChildViewController.h
+//  MailBoxChildViewController.m
 //  XLMailBoxContainer ( https://github.com/xmartlabs/XLMailBoxContainer )
 //
 //  Copyright (c) 2014 Xmartlabs ( http://xmartlabs.com )

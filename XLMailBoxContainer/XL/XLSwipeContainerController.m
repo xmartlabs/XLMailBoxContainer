@@ -36,6 +36,7 @@
     NSUInteger _lastPageNumber;
     CGFloat _lastContentOffset;
     NSUInteger _pageBeforeRotate;
+    NSArray * _originalSwipeViewControllers;
 }
 
 @synthesize currentIndex = _currentIndex;
@@ -96,11 +97,10 @@
 -(void)swipeInit
 {
     _currentIndex = 0;
-    _swipeEnabled = YES;
-    _animationDuration = 0.3f;
     _delegate = self;
     _dataSource = self;
     _lastContentOffset = 0.0f;
+    _skipIntermediateViewControllers = YES;
 }
 
 - (void)viewDidLoad
@@ -154,7 +154,27 @@
 
 -(void)moveToViewControllerAtIndex:(NSInteger)index withDirection:(XLSwipeDirection)direction animated:(BOOL)animated
 {
-    [self.containerView setContentOffset:CGPointMake([self pageOffsetForChildIndex:index], 0) animated:animated];
+    if (self.skipIntermediateViewControllers && fabs(self.currentIndex - index) > 1){
+        NSArray * originalSwipeViewControllers = self.swipeViewControllers;
+        NSMutableArray * tempChildViewControllers = [NSMutableArray arrayWithArray:originalSwipeViewControllers];
+        UIViewController * currentChildVC = [originalSwipeViewControllers objectAtIndex:self.currentIndex];
+        NSUInteger fromIndex = (direction == XLSwipeDirectionLeft) ? index -1 : index + 1;
+                [tempChildViewControllers setObject:[originalSwipeViewControllers objectAtIndex:fromIndex] atIndexedSubscript:self.currentIndex];
+        [tempChildViewControllers setObject:currentChildVC atIndexedSubscript:fromIndex];
+        _swipeViewControllers = tempChildViewControllers;
+        [self.containerView setContentOffset:CGPointMake([self pageOffsetForChildIndex:fromIndex], 0) animated:NO];
+        if (self.navigationController){
+            self.navigationController.view.userInteractionEnabled = NO;
+        }
+        else{
+            self.view.userInteractionEnabled = NO;
+        }
+        _originalSwipeViewControllers = originalSwipeViewControllers;
+        [self.containerView setContentOffset:CGPointMake([self pageOffsetForChildIndex:index], 0) animated:YES];
+    }
+    else{
+        [self.containerView setContentOffset:CGPointMake([self pageOffsetForChildIndex:index], 0) animated:animated];
+    }
 }
 
 -(void)moveToViewControllerAtIndex:(NSUInteger)index animated:(bool)animated
@@ -301,6 +321,17 @@
 
 -(void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
+    if (self.containerView == scrollView && _originalSwipeViewControllers){
+        _swipeViewControllers = _originalSwipeViewControllers;
+        _originalSwipeViewControllers = nil;
+        if (self.navigationController){
+            self.navigationController.view.userInteractionEnabled = YES;
+        }
+        else{
+            self.view.userInteractionEnabled = YES;
+        }
+        [self updateContent];
+    }
 }
 
 
