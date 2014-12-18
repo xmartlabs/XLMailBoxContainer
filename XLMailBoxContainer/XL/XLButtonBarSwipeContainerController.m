@@ -29,7 +29,7 @@
 @interface XLButtonBarSwipeContainerController () <UICollectionViewDelegate, UICollectionViewDataSource>
 
 @property (nonatomic) IBOutlet XLSwipeButtonBarView * swipeBar;
-@property (nonatomic) BOOL shouldUpdateSegmentedControl;
+@property (nonatomic) BOOL shouldUpdateSwipeBar;
 
 @end
 
@@ -42,6 +42,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+        self.shouldUpdateSwipeBar = YES;
     }
     return self;
 }
@@ -50,6 +51,7 @@
 {
     self = [super initWithCoder:coder];
     if (self) {
+        self.shouldUpdateSwipeBar = YES;
     }
     return self;
 }
@@ -100,7 +102,7 @@
 
 -(void)swipeContainerController:(XLSwipeContainerController *)swipeContainerController updateIndicatorToViewController:(UIViewController *)viewController fromViewController:(UIViewController *)fromViewController
 {
-    if (self.shouldUpdateSegmentedControl){
+    if (self.shouldUpdateSwipeBar){
         NSUInteger newIndex = [self.swipeViewControllers indexOfObject:viewController];
         XLSwipeDirection direction = XLSwipeDirectionLeft;
         if (newIndex < [self.swipeViewControllers indexOfObject:fromViewController]){
@@ -132,7 +134,7 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     [self.swipeBar moveToIndex:indexPath.item animated:YES swipeDirection:XLSwipeDirectionNone];
-    self.shouldUpdateSegmentedControl = NO;
+    self.shouldUpdateSwipeBar = NO;
     [self moveToViewControllerAtIndex:indexPath.item];  
 }
 
@@ -166,7 +168,7 @@
 {
     [super scrollViewDidEndScrollingAnimation:scrollView];
     if (scrollView == self.containerView){
-        self.shouldUpdateSegmentedControl = YES;
+        self.shouldUpdateSwipeBar = YES;
     }
 }
 
