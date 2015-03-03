@@ -1,6 +1,9 @@
 XLMailBoxContainer
 ==================
 
+###This repository is no longer maintained. Take a look at [XLPagerTabStrip](https://github.com/xmartlabs/XLPagerTabStrip) for a better solution.
+
+
 By [XMARTLABS](http://xmartlabs.com).
 
 Custom container view controller ala MailBox app.
@@ -23,7 +26,7 @@ You can use this pod along with [MCSwipeTableViewCell](https://github.com/alikar
 Installation
 --------
 
-The easiest way to integrate XLMailBoxContainer in your projects is via [CocoaPods](http://cocoapods.org). 
+The easiest way to integrate XLMailBoxContainer in your projects is via [CocoaPods](http://cocoapods.org).
 
 1. Add the following line in the project's Podfile file.
 
@@ -32,7 +35,7 @@ The easiest way to integrate XLMailBoxContainer in your projects is via [CocoaPo
 2. Run the command `pod install` from the Podfile folder directory.
 
 You can also install XLMailBoxContainer manually. We don't recommend this approach at all.
-The source files you will need are included in XLMailBoxContainer/XL folder. 
+The source files you will need are included in XLMailBoxContainer/XL folder.
 
 
 Example
@@ -85,4 +88,3 @@ If you are using XLMailBoxContainer in your project and have any suggestion or q
 Martin Barreto, <martin@xmartlabs.com>
 
 [@Xmartlabs](http://www.xmartlabs.com)
-
